@@ -17,4 +17,4 @@ build/
 .idea/
 
 // Prisma
-**/src/generated/prisma
+src/generated/prisma
