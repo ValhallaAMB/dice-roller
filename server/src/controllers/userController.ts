@@ -1,5 +1,5 @@
 import type { Request, Response } from "express-serve-static-core";
-import { Prisma, PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "../generated/prisma/client.js";
 
 // Global Prisma client instance
 const prisma = new PrismaClient();
