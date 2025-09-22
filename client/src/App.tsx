@@ -1,6 +1,18 @@
+import { Route, Routes } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+
 function App() {
   return (
     <>
+      <NavBar />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile/:id" element={<ProfilePage />} />
+      </Routes>
+
       {/* <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
@@ -20,8 +32,8 @@ function App() {
                 alt="user photo"
               /> */}
 
-              {/* Dropdown menu */}
-              {/* <div className="bg-gray-100 absolute top-full right-0 rounded-lg p-3 mt-1 shadow-md scale-y-0  group-focus:scale-y-100 origin-top duration-200">
+      {/* Dropdown menu */}
+      {/* <div className="bg-gray-100 absolute top-full right-0 rounded-lg p-3 mt-1 shadow-md scale-y-0  group-focus:scale-y-100 origin-top duration-200">
                 <ul className="text-left">
                   <li>username</li>
                   <li>example@email.com</li>
@@ -36,12 +48,6 @@ function App() {
           </div>
         </div>
       </nav> */}
-
-
-
-      <form>
-        
-      </form>
     </>
   );
 }
