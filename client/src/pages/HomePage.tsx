@@ -1,43 +1,23 @@
 import { useEffect, useState } from "react";
 import useUserStore from "../store/useUserStore";
+import useRollStore from "../store/useRollStore";
 
 function HomePage() {
-  const { users, loading, error, fetchUsers } = useUserStore();
+  // const { users, loading, error, fetchUsers } = useUserStore();
+  const { createRoll } = useRollStore();
   const [result, setResult] = useState(0);
   const [sides, setSides] = useState(-1);
 
   const rollDice = (dice: number): void => {
     const result = Math.floor(Math.random() * dice) + 1;
     setResult(result);
+    createRoll(1, "D" + sides, result);
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  console.log(users, loading, error);
+  // console.log(users, loading, error);
 
   return (
     <main className="grid place-items-center">
-      <div className="container mx-auto p-4">
-        {error && <div className="alert alert-error mb-8">{error}</div>}
-
-        {loading ? (
-          <div className="flex justify-center items-center ">
-            <div className="loading loading-spinner loading-lg"></div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {users.map((user) => (
-              <ul key={user.id}>
-                <li>{user.name}</li>
-                <li>{user.email}</li>
-              </ul>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* Main dice roller */}
       <div className="my-4 grid place-items-center space-y-4">
         {sides === -1 ? (
@@ -108,7 +88,7 @@ function HomePage() {
       </div>
       <button
         className="btn btn-primary btn-lg mt-4"
-        onClick={() => rollDice(sides)}
+        onClick={() => (sides !== -1 ? rollDice(sides) : null)}
       >
         Roll Dice
       </button>

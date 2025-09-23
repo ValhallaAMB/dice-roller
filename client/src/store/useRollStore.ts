@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import type { Roll } from "../dtos/Roll.dot";
+import toast from "react-hot-toast";
 
 type RollState = {
   rolls: Array<Roll>;
@@ -8,6 +9,8 @@ type RollState = {
   error: string | null;
 
   fetchRolls: () => Promise<void>;
+  deleteRoll: (id: number) => void;
+  createRoll: (userId: number, type: string, result: number) => void;
 };
 
 const BASE_URL = "http://localhost:3000";
@@ -28,6 +31,35 @@ const useRollStore = create<RollState>((set, get) => ({
       if (error.status == 429)
         set({ error: "Too many requests - try again later", rolls: [] });
       else set({ error: "Failed to fetch rolls", rolls: [] });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  createRoll: async (userId: number, type: string, result: number) => {
+    set({ loading: true });
+    try {
+      const res = await axios.post(`${BASE_URL}/api/rolls`, { userId, type, result });
+      const newRoll: Roll = await res.data;
+      set((prev) => ({ rolls: [newRoll, ...prev.rolls] }));
+      toast.success("Roll saved");
+    } catch (error) {
+      toast.error("Failed to save roll");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  deleteRoll: async (id: number) => {
+    set({ loading: true });
+    try {
+      await axios.delete(`${BASE_URL}/api/rolls/${id}`);
+      set((prev) => ({
+        rolls: prev.rolls.filter((roll) => roll.id !== id),
+      }));
+      toast.success("Roll deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete roll");
     } finally {
       set({ loading: false });
     }

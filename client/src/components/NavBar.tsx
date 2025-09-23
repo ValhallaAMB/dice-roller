@@ -1,7 +1,7 @@
-import { HistoryIcon, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
-import DropdownMenu from "./DropdownMenu";
+import HistoryDropMenu from "./HistoryDropMenu";
+import ProfileDropMenu from "./ProfileDropMenu";
 
 function NavBar() {
   const isHomePage = window.location.pathname === "/";
@@ -24,11 +24,14 @@ function NavBar() {
 
           {/* Settings | Right side */}
           <section className="flex items-center gap-4 [&>*]:rounded-full [&>*]:p-1 [&>*]:hover:bg-neutral [&>*]:transition-colors">
+            {/* THEME SWITCHER */}
             <ThemeSwitcher />
 
-            <DropdownMenu icon={HistoryIcon} />
+            {/* HISTORY ICON */}
+            <HistoryDropMenu />
 
-            <DropdownMenu icon={User} />
+            {/* PROFILE ICON */}
+            <ProfileDropMenu />
           </section>
         </div>
       </div>

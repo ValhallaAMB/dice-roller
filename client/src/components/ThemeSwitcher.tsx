@@ -14,10 +14,10 @@ function ThemeSwitcher() {
         />
 
         {/* moon icon */}
-        <Moon className="swap-off size-5.5" />
+        <Moon className="swap-off" size={22} />
 
         {/* sun icon */}
-        <Sun className="swap-on size-5.5" />
+        <Sun className="swap-on" size={22} />
       </label>
     </>
   );
