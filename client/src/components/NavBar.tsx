@@ -1,6 +1,7 @@
-import { User } from "lucide-react";
+import { HistoryIcon, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
+import DropdownMenu from "./DropdownMenu";
 
 function NavBar() {
   const isHomePage = window.location.pathname === "/";
@@ -10,7 +11,7 @@ function NavBar() {
       <div className="max-w-7xl mx-auto">
         <div className="navbar px-4 min-h-[4rem] justify-between">
           {/* Logo | Left side */}
-          <div className="flex-1 lg:flex-none">
+          <section className="flex-1 lg:flex-none">
             <Link to="/" className="hover:opacity-80 transition-opacity">
               <div className="flex items-center gap-2">
                 <img src="/dice.png" alt="Logo" className="size-7" />
@@ -19,18 +20,16 @@ function NavBar() {
                 </span>
               </div>
             </Link>
-          </div>
+          </section>
 
           {/* Settings | Right side */}
-          <div className="flex items-center gap-4">
+          <section className="flex items-center gap-4 [&>*]:rounded-full [&>*]:p-1 [&>*]:hover:bg-neutral [&>*]:transition-colors">
             <ThemeSwitcher />
 
-            {isHomePage && (
-              <div className="p-2 rounded-full hover:bg-base-200 transition-colors">
-                <User className="size-5.5" />
-              </div>
-            )}
-          </div>
+            <DropdownMenu icon={HistoryIcon} />
+
+            <DropdownMenu icon={User} />
+          </section>
         </div>
       </div>
     </header>

@@ -39,10 +39,6 @@ function HomePage() {
       </div>
 
       {/* Main dice roller */}
-      {/* <figure className="size-64">
-          <img src="/dice.png" alt="Dice" />
-        </figure> */}
-
       <div className="my-4 grid place-items-center space-y-4">
         {sides === -1 ? (
           <label className="text-3xl">Select a dice to roll</label>
@@ -60,6 +56,13 @@ function HomePage() {
       </div>
 
       <div className="join gap-1.5 [&>*]:rounded-md">
+        <input
+          className="join-item btn"
+          type="radio"
+          name="options"
+          aria-label="D4"
+          onChange={() => setSides(4)}
+        />
         <input
           className="join-item btn"
           type="radio"
@@ -92,22 +95,15 @@ function HomePage() {
           className="join-item btn"
           type="radio"
           name="options"
-          aria-label="D14"
-          onChange={() => setSides(14)}
-        />
-        <input
-          className="join-item btn"
-          type="radio"
-          name="options"
-          aria-label="D16"
-          onChange={() => setSides(16)}
-        />
-        <input
-          className="join-item btn"
-          type="radio"
-          name="options"
           aria-label="D20"
           onChange={() => setSides(20)}
+        />
+        <input
+          className="join-item btn"
+          type="radio"
+          name="options"
+          aria-label="D100"
+          onChange={() => setSides(100)}
         />
       </div>
       <button

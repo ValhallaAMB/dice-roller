@@ -25,8 +25,8 @@ const useUserStore = create<UserState>((set, get) => ({
       set({ users: data, error: null });
     } catch (error: any) {
       if (error.status == 429)
-        set({ error: "Too many requests - try again later" });
-      else set({ error: "Failed to fetch users" });
+        set({ error: "Too many requests - try again later", users: [] });
+      else set({ error: "Failed to fetch users", users: [] });
     } finally {
       set({ loading: false });
     }

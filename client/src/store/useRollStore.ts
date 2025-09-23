@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import axios from "axios";
+import type { Roll } from "../dtos/Roll.dot";
 
 type RollState = {
-  rolls: Array<object>;
+  rolls: Array<Roll>;
   loading: boolean;
   error: string | null;
 
@@ -20,14 +21,13 @@ const useRollStore = create<RollState>((set, get) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.get(`${BASE_URL}/api/rolls`).then((response) => {
-        set({ rolls: response.data, error: null });
-      });
+      const res = await axios.get(`${BASE_URL}/api/rolls`);
+      const data: Roll[] = await res.data;
+      set({ rolls: data, error: null });
     } catch (error: any) {
       if (error.status == 429)
-        set({ error: "Too many requests - try again later" });
-      else 
-        set({ error: "Failed to fetch rolls" });
+        set({ error: "Too many requests - try again later", rolls: [] });
+      else set({ error: "Failed to fetch rolls", rolls: [] });
     } finally {
       set({ loading: false });
     }
