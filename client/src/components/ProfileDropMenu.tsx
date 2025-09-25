@@ -1,18 +1,22 @@
 import { LogOut, User, UserPen } from "lucide-react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ProfileDropMenu() {
   return (
-    <details className="dropdown dropdown-end">
-      <summary className="btn btn-circle bg-transparent">
+    <div className="dropdown dropdown-end">
+      <div tabIndex={0} role="button" className="btn btn-circle bg-transparent">
         <User size={22} />
-      </summary>
-      <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1">
+      </div>
+
+      <ul
+        tabIndex={0}
+        className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 shadow-sm"
+      >
         <li>
-          {/* <Link to="/profile">Profile</Link> */}
-          <span>
+          {/* Must put an ID for now */}
+          <Link to="/profile/1">
             <UserPen size={16} /> Profile
-          </span>
+          </Link>
         </li>
         <li>
           {/* <Link to="/logout">Logout</Link> */}
@@ -21,7 +25,7 @@ function ProfileDropMenu() {
           </span>
         </li>
       </ul>
-    </details>
+    </div>
   );
 }
 

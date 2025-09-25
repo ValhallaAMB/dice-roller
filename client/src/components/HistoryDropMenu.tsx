@@ -2,22 +2,28 @@ import { HistoryIcon } from "lucide-react";
 import useRollStore from "../store/useRollStore";
 import { useEffect, useState } from "react";
 import CustomModal from "./CustomModal";
+import useThemeStore from "../store/useThemeStore";
+import { twMerge } from "tailwind-merge";
 
 function HistoryDropMenu() {
   const { rolls, loading, error, fetchRolls, deleteRoll, deleteRolls } =
     useRollStore();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     fetchRolls();
   }, [fetchRolls]);
 
   return (
-    <details className="dropdown dropdown-end">
-      <summary className="btn btn-circle bg-transparent">
+    <div className="dropdown dropdown-end">
+      <div tabIndex={0} role="button" className="btn btn-circle bg-transparent">
         <HistoryIcon size={22} />
-      </summary>
-      <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 max-h-97 overflow-x-auto">
+      </div>
+      <ul
+        tabIndex={0}
+        className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 max-h-97 overflow-x-auto shadow-sm"
+      >
         {/* ERROR MESSAGE */}
         {error && <div className="alert alert-error mb-2">{error}</div>}
 
@@ -61,7 +67,13 @@ function HistoryDropMenu() {
               <tbody>
                 {/* rows */}
                 {rolls.map((roll) => (
-                  <tr key={roll.id} className="hover:bg-neutral rounded-box">
+                  <tr
+                    key={roll.id}
+                    className={twMerge(
+                      "hover:bg-neutral rounded-box",
+                      theme === "light" && "hover:bg-neutral/30",
+                    )}
+                  >
                     <td>
                       <label>
                         <input
@@ -130,7 +142,7 @@ function HistoryDropMenu() {
           </li>
         )}
       </ul>
-    </details>
+    </div>
   );
 }
 
