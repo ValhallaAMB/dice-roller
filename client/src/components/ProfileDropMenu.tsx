@@ -3,8 +3,10 @@ import { LogOut, User, UserPen } from "lucide-react";
 
 function ProfileDropMenu() {
   return (
-    <button className="dropdown dropdown-end cursor-pointer">
-      <User size={22} />
+    <details className="dropdown dropdown-end">
+      <summary className="btn btn-circle bg-transparent">
+        <User size={22} />
+      </summary>
       <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1">
         <li>
           {/* <Link to="/profile">Profile</Link> */}
@@ -19,7 +21,7 @@ function ProfileDropMenu() {
           </span>
         </li>
       </ul>
-    </button>
+    </details>
   );
 }
 

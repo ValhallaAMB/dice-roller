@@ -1,6 +1,7 @@
 import { HistoryIcon } from "lucide-react";
 import useRollStore from "../store/useRollStore";
 import { useEffect, useState } from "react";
+import CustomModal from "./CustomModal";
 
 function HistoryDropMenu() {
   const { rolls, loading, error, fetchRolls, deleteRoll, deleteRolls } =
@@ -12,8 +13,10 @@ function HistoryDropMenu() {
   }, [fetchRolls]);
 
   return (
-    <button className="dropdown dropdown-end cursor-pointer">
-      <HistoryIcon size={22} />
+    <details className="dropdown dropdown-end">
+      <summary className="btn btn-circle bg-transparent">
+        <HistoryIcon size={22} />
+      </summary>
       <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 max-h-97 overflow-x-auto">
         {/* ERROR MESSAGE */}
         {error && <div className="alert alert-error mb-2">{error}</div>}
@@ -34,7 +37,6 @@ function HistoryDropMenu() {
                       <input
                         type="checkbox"
                         className="checkbox"
-                        // expects: selectedIds: number[], setSelectedIds: (ids: number[]) => void, rolls: { id: number }[]
                         checked={
                           selectedIds?.length === rolls.length &&
                           rolls.length > 0
@@ -83,12 +85,14 @@ function HistoryDropMenu() {
                     <td>{roll.type}</td>
                     <td>{new Date(roll.createdAt).toLocaleString()}</td>
                     <td>
-                      <button
-                        className="btn btn-error btn-sm"
-                        onClick={() => deleteRoll(roll.id)}
-                      >
-                        Delete
-                      </button>
+                      <CustomModal
+                        id={"delete-roll-" + roll.id}
+                        name="Delete Roll"
+                        title="Delete"
+                        message={`Are you sure you want to delete roll #${roll.id}?`}
+                        twBtnStyle="btn-error"
+                        func={() => deleteRoll(roll.id)}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -103,18 +107,22 @@ function HistoryDropMenu() {
                   <td></td>
                   <td></td>
                   <td>
-                    <button
-                      className="btn btn-error btn-sm"
-                      onClick={() => {
-                        // expects: deleteRolls(ids: number[]) available from useRollStore
+                    {/* Use a modal for bulk delete confirmation as well */}
+                    <CustomModal
+                      id={"delete-rolls-bulk"}
+                      name="Delete Rolls"
+                      title={
+                        selectedIds.length === rolls.length
+                          ? "Delete all"
+                          : "Delete"
+                      }
+                      message={`Are you sure you want to delete ${selectedIds.length} roll(s)?`}
+                      twBtnStyle="btn-error"
+                      func={() => {
                         deleteRolls(selectedIds);
                         setSelectedIds([]);
                       }}
-                    >
-                      {selectedIds.length === rolls.length
-                        ? "Delete all rolls"
-                        : "Delete rolls"}
-                    </button>
+                    />
                   </td>
                 </tfoot>
               )}
@@ -122,7 +130,7 @@ function HistoryDropMenu() {
           </li>
         )}
       </ul>
-    </button>
+    </details>
   );
 }
 
