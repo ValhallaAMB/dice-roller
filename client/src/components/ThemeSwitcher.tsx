@@ -6,7 +6,7 @@ function ThemeSwitcher() {
 
   return (
     <>
-      <label className="swap swap-rotate ">
+      <label className="swap swap-rotate">
         {/* this hidden checkbox controls the state */}
         <input
           type="checkbox"

@@ -7,20 +7,20 @@ function NavBar() {
   // const isHomePage = window.location.pathname === "/";
 
   return (
-    <header className="bg-base-100 shadow-sm border-b border-base-content/10">
-      <div className="navbar max-w-7xl mx-auto">
+    <header className="bg-base-100 border-base-content/10 border-b shadow-sm">
+      <div className="navbar mx-auto max-w-7xl">
         <Link
           to="/"
-          className="hover:opacity-80 transition-opacity flex-1 items-center flex gap-3"
+          className="flex flex-1 items-center gap-3 transition-opacity hover:opacity-80"
         >
           {/* <div className="flex items-center gap-2"> */}
           <img src="/dice.png" alt="Logo" className="size-7" />
-          <span className="font-semibold font-mono tracking-wider text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+          <span className="from-primary to-secondary bg-gradient-to-r bg-clip-text font-mono text-2xl font-semibold tracking-wider text-transparent">
             Dice Roller
           </span>
           {/* </div> */}
         </Link>
-        <section className="flex items-center gap-3 [&>*]:rounded-full [&>*]:p-1 [&>*]:hover:bg-neutral [&>*]:transition-colors">
+        <section className="[&>*]:hover:bg-neutral flex items-center gap-3 [&>*]:rounded-full [&>*]:p-1 [&>*]:transition-colors">
           {/* THEME SWITCHER */}
           <ThemeSwitcher />
 

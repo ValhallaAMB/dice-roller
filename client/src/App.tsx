@@ -9,7 +9,7 @@ function App() {
   const { theme } = useThemeStore();
   return (
     <main
-      className="min-h-screen bg-base-200 text-base-content"
+      className="bg-base-200 text-base-content min-h-screen"
       data-theme={theme}
     >
       <NavBar />

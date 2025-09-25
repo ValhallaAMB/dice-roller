@@ -14,13 +14,13 @@ function HistoryDropMenu() {
   return (
     <button className="dropdown dropdown-end cursor-pointer">
       <HistoryIcon size={22} />
-      <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 overflow-x-auto max-h-97">
+      <ul className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 max-h-97 overflow-x-auto">
         {/* ERROR MESSAGE */}
         {error && <div className="alert alert-error mb-2">{error}</div>}
 
         {/* LOADING STATE */}
         {loading ? (
-          <div className="flex justify-center items-center ">
+          <div className="flex items-center justify-center">
             <div className="loading loading-spinner loading-lg"></div>
           </div>
         ) : (
@@ -69,7 +69,7 @@ function HistoryDropMenu() {
                           onChange={() => {
                             if (selectedIds.includes(roll.id)) {
                               setSelectedIds(
-                                selectedIds.filter((id) => id !== roll.id)
+                                selectedIds.filter((id) => id !== roll.id),
                               );
                             } else {
                               setSelectedIds([...selectedIds, roll.id]);
