@@ -58,11 +58,13 @@ const createRoll = async (req: Request, res: Response) => {
 //   }
 // };
 
+// Delete roll (/api/rolls/:id) Delete a single roll by ID
 const deleteRoll = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
     const deletedRoll = await prisma.roll.delete({
       where: {
-        id: Number(req.params.id),
+        id: Number(id),
       },
     });
 
@@ -74,4 +76,24 @@ const deleteRoll = async (req: Request, res: Response) => {
   }
 };
 
-export { getRolls, createRoll, deleteRoll };
+// Delete rolls (/api/rolls) Delete multiple rolls by IDs
+const deleteRolls = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body; // Expecting an array of IDs to delete
+    const deleteRolls = await prisma.roll.deleteMany({
+      where: {
+        id: {
+          in: ids.map((id: string) => Number(id)),
+        },
+      },
+    });
+
+    if (!deleteRolls) return res.status(404).json({ error: "Roll not found" });
+
+    res.json(deleteRolls);
+  } catch (error: any) {
+    res.status(500).json({ message: `Error deleting roll ${error.message}` });
+  }
+};
+
+export { getRolls, createRoll, deleteRoll, deleteRolls };

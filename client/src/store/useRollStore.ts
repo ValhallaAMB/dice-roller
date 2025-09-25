@@ -11,6 +11,7 @@ type RollState = {
   fetchRolls: () => Promise<void>;
   deleteRoll: (id: number) => void;
   createRoll: (userId: number, type: string, result: number) => void;
+  deleteRolls: (ids: number[]) => void;
 };
 
 const BASE_URL = "http://localhost:3000";
@@ -64,6 +65,21 @@ const useRollStore = create<RollState>((set, get) => ({
       set({ loading: false });
     }
   },
+
+  deleteRolls: async (ids: number[]) => {
+    set({ loading: true });
+    try {
+      await axios.delete(`${BASE_URL}/api/rolls`, { data: { ids } });
+      set((prev) => ({
+        rolls: prev.rolls.filter((roll) => !ids.includes(roll.id)),
+      }));
+      toast.success("Rolls deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete rolls");
+    } finally {
+      set({ loading: false });
+    }
+  }
 }));
 
 export default useRollStore;

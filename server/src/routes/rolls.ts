@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createRoll,
   deleteRoll,
+  deleteRolls,
   // getRoll,
   getRolls,
   // updateRoll,
@@ -23,5 +24,8 @@ rollRouter.post("/", createRoll);
 
 // Delete roll (/api/rolls/:id)
 rollRouter.delete("/:id", deleteRoll);
+
+// Delete rolls (/api/rolls)
+rollRouter.delete("/", deleteRolls);
 
 export default rollRouter;
