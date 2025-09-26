@@ -14,7 +14,7 @@ type RollState = {
   deleteRolls: (ids: number[]) => void;
 };
 
-const BASE_URL = "http://localhost:3000";
+const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
 
 const useRollStore = create<RollState>((set, get) => ({
   rolls: [],
@@ -25,7 +25,7 @@ const useRollStore = create<RollState>((set, get) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.get(`${BASE_URL}/api/rolls`);
+      const res = await axios.get(`${baseURL}/api/rolls`);
       const data: Roll[] = await res.data;
       set({ rolls: data, error: null });
     } catch (error: any) {
@@ -40,7 +40,11 @@ const useRollStore = create<RollState>((set, get) => ({
   createRoll: async (userId: number, type: string, result: number) => {
     set({ loading: true });
     try {
-      const res = await axios.post(`${BASE_URL}/api/rolls`, { userId, type, result });
+      const res = await axios.post(`${baseURL}/api/rolls`, {
+        userId,
+        type,
+        result,
+      });
       const newRoll: Roll = await res.data;
       set((prev) => ({ rolls: [newRoll, ...prev.rolls] }));
       toast.success("Roll saved");
@@ -54,7 +58,7 @@ const useRollStore = create<RollState>((set, get) => ({
   deleteRoll: async (id: number) => {
     set({ loading: true });
     try {
-      await axios.delete(`${BASE_URL}/api/rolls/${id}`);
+      await axios.delete(`${baseURL}/api/rolls/${id}`);
       set((prev) => ({
         rolls: prev.rolls.filter((roll) => roll.id !== id),
       }));
@@ -69,7 +73,7 @@ const useRollStore = create<RollState>((set, get) => ({
   deleteRolls: async (ids: number[]) => {
     set({ loading: true });
     try {
-      await axios.delete(`${BASE_URL}/api/rolls`, { data: { ids } });
+      await axios.delete(`${baseURL}/api/rolls`, { data: { ids } });
       set((prev) => ({
         rolls: prev.rolls.filter((roll) => !ids.includes(roll.id)),
       }));
@@ -79,7 +83,7 @@ const useRollStore = create<RollState>((set, get) => ({
     } finally {
       set({ loading: false });
     }
-  }
+  },
 }));
 
 export default useRollStore;

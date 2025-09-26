@@ -11,7 +11,7 @@ type UserState = {
   deleteUser: (id: number) => void;
 };
 
-const BASE_URL = "http://localhost:3000";
+const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
 
 const useUserStore = create<UserState>((set, get) => ({
   users: [],
@@ -22,7 +22,7 @@ const useUserStore = create<UserState>((set, get) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.get(`${BASE_URL}/api/users`);
+      const res = await axios.get(`${baseURL}/api/users`);
       const data: User[] = await res.data;
       set({ users: data, error: null });
     } catch (error: any) {
@@ -37,7 +37,7 @@ const useUserStore = create<UserState>((set, get) => ({
   deleteUser: async (id: number) => {
     set({ loading: true });
     try {
-      await axios.delete(`${BASE_URL}/api/users/${id}`);
+      await axios.delete(`${baseURL}/api/users/${id}`);
       set(prev => ({
         users: prev.users.filter(user => user.id !== id)
       }))

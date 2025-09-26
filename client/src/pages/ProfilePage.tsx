@@ -44,10 +44,10 @@ function ProfilePage() {
 
         {togglePassword && (
           <div className="grid space-y-1">
-            <CustomPasswordField required={togglePassword} title="Password" />
+            <CustomPasswordField required={togglePassword} title="New Password" />
             <CustomPasswordField
               required={togglePassword}
-              title="Confirm Password"
+              title="Confirm New Password"
             />
           </div>
         )}

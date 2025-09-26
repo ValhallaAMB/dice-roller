@@ -13,7 +13,7 @@ import type { ArcjetNodeRequest } from "@arcjet/node";
 
 // Load environment variables from .env file
 dotenv.config({
-  path: "../env",
+  path: "../.env",
   quiet: true,
   // debug: true,
 });
@@ -22,7 +22,7 @@ dotenv.config({
 const app = express();
 
 // Port
-const port = process.env.PORT || 3000;
+const port = Number(process.env.PORT) || 3000;
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
@@ -72,6 +72,6 @@ app.use("/api/users", userRouter);
 app.use("/api/rolls", rollRouter);
 
 // Start server
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on port ${port}`);
 });
