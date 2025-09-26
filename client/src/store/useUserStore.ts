@@ -11,7 +11,7 @@ type UserState = {
   deleteUser: (id: number) => void;
 };
 
-const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
+const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
 const useUserStore = create<UserState>((set) => ({
   users: [],

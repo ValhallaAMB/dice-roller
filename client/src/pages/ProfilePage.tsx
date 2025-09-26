@@ -43,13 +43,16 @@ function ProfilePage() {
         </button>
 
         {togglePassword && (
-          <div className="grid space-y-1">
-            <CustomPasswordField required={togglePassword} title="New Password" />
+          <>
+            <CustomPasswordField
+              required={togglePassword}
+              title="New Password"
+            />
             <CustomPasswordField
               required={togglePassword}
               title="Confirm New Password"
             />
-          </div>
+          </>
         )}
 
         <button className="btn btn-primary mt-1">save</button>

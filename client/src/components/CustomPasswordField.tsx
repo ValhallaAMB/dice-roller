@@ -13,7 +13,7 @@ function CustomPasswordField({ required, title }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <>
+    <main className="grid space-y-1">
       <label className="label">{title}</label>
       <div className="join">
         <div className="w-full">
@@ -45,7 +45,7 @@ function CustomPasswordField({ required, title }: Props) {
           {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
       </div>
-    </>
+    </main>
   );
 }
 

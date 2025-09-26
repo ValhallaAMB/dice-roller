@@ -14,7 +14,7 @@ type RollState = {
   deleteRolls: (ids: number[]) => void;
 };
 
-const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
+const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
 const useRollStore = create<RollState>((set) => ({
   rolls: [],
