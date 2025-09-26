@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import useUserStore from "../store/useUserStore";
+import { useState } from "react";
+// import useUserStore from "../store/useUserStore";
 import useRollStore from "../store/useRollStore";
 
 function HomePage() {

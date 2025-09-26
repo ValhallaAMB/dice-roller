@@ -16,7 +16,7 @@ type RollState = {
 
 const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
 
-const useRollStore = create<RollState>((set, get) => ({
+const useRollStore = create<RollState>((set) => ({
   rolls: [],
   loading: false,
   error: null,

@@ -13,7 +13,7 @@ type UserState = {
 
 const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
 
-const useUserStore = create<UserState>((set, get) => ({
+const useUserStore = create<UserState>((set) => ({
   users: [],
   loading: false,
   error: null,
