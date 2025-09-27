@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { User } from "../dtos/User.dto";
+import type { User } from "../types/User";
 import toast from "react-hot-toast";
 
 type UserState = {
@@ -22,7 +22,7 @@ const useUserStore = create<UserState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.get(`${baseURL}/api/users`);
+      const res = await axios.get(`${baseURL}/users`);
       const data: User[] = await res.data;
       set({ users: data, error: null });
     } catch (error: any) {
@@ -37,14 +37,14 @@ const useUserStore = create<UserState>((set) => ({
   deleteUser: async (id: number) => {
     set({ loading: true });
     try {
-      await axios.delete(`${baseURL}/api/users/${id}`);
-      set(prev => ({
-        users: prev.users.filter(user => user.id !== id)
-      }))
+      await axios.delete(`${baseURL}/users/${id}`);
+      set((prev) => ({
+        users: prev.users.filter((user) => user.id !== id),
+      }));
       toast.success("User deleted successfully");
     } catch (error) {
       toast.error("Failed to delete user");
-    } finally{
+    } finally {
       set({ loading: false });
     }
   },

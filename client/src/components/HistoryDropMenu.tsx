@@ -1,7 +1,7 @@
 import { HistoryIcon } from "lucide-react";
 import useRollStore from "../store/useRollStore";
 import { useEffect, useState } from "react";
-import CustomModal from "./CustomModal";
+import NotificationModal from "./custom/NotificationModal";
 import useThemeStore from "../store/useThemeStore";
 import { twMerge } from "tailwind-merge";
 
@@ -97,7 +97,7 @@ function HistoryDropMenu() {
                     <td>{roll.type}</td>
                     <td>{new Date(roll.createdAt).toLocaleString()}</td>
                     <td>
-                      <CustomModal
+                      <NotificationModal
                         id={"delete-roll-" + roll.id}
                         name="Delete Roll"
                         title="Delete"
@@ -120,7 +120,7 @@ function HistoryDropMenu() {
                   <td></td>
                   <td>
                     {/* Use a modal for bulk delete confirmation as well */}
-                    <CustomModal
+                    <NotificationModal
                       id={"delete-rolls-bulk"}
                       name="Delete Rolls"
                       title={

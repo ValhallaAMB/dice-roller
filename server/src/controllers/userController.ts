@@ -1,20 +1,25 @@
-import type { Request, Response } from "express-serve-static-core";
-import { PrismaClient } from "../generated/prisma/client.js";
+import type {
+  ParamsDictionary,
+  Request,
+  Response,
+} from "express-serve-static-core";
+import { PrismaClient, type User } from "../generated/prisma/client.js";
 
 // Global Prisma client instance
 const prisma = new PrismaClient();
 
 // Get all users (For testing purposes)
-const getUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.json(users);
-  } catch (error: any) {
-    res.status(500).json({ message: `Error fetching users ${error.message}` });
-  }
-};
+// const getUsers = async (req: Request, res: Response) => {
+//   try {
+//     const users = await prisma.user.findMany();
+//     res.json(users);
+//   } catch (error: any) {
+//     res.status(500).json({ message: `Error fetching users ${error.message}` });
+//   }
+// };
 
-const getUser = async (req: Request, res: Response) => {
+// Get user (/users/:id)
+const getUser = async (req: Request<{ id: number }>, res: Response) => {
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -30,14 +35,18 @@ const getUser = async (req: Request, res: Response) => {
   }
 };
 
-const createUser = async (req: Request, res: Response) => {
+// Create user (/users)
+const createUser = async (
+  req: Request<ParamsDictionary, any, User>,
+  res: Response
+) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, pfpBase64 } = req.body;
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
-        // createdAt: new Date(), // Automatically set by Prisma
+        pfpBase64,
       },
     });
     res.status(201).json(newUser);
@@ -46,20 +55,16 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-const updateUser = async (req: Request, res: Response) => {
+// Update user (/users/:id)
+const updateUser = async (
+  req: Request<{ id: number }, any, User>,
+  res: Response
+) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, pfpBase64 } = req.body;
     const updateUser = await prisma.user.update({
       where: { id: Number(req.params.id) },
-      // Returns the updated user without the createdAt field
-      omit: { createdAt: true }, // Prevent updating createdAt 
-      data: { name, email },
-      // Returns the updated user with all fields
-      // data: {
-      //   name, 
-      //   email,
-      //   createdAt: Prisma.skip, // Prevent updating createdAt
-      // }
+      data: { name, email, pfpBase64 },
     });
 
     res.json(updateUser);
@@ -68,7 +73,8 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+// Delete user (/users/:id)
+const deleteUser = async (req: Request<{ id: number }>, res: Response) => {
   try {
     const deleteUser = await prisma.user.delete({
       where: {
@@ -84,4 +90,4 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, getUser, createUser, updateUser, deleteUser };
+export { getUser, createUser, updateUser, deleteUser };

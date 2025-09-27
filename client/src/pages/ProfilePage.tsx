@@ -1,6 +1,7 @@
 import { Mail } from "lucide-react";
 import { useState } from "react";
-import CustomPasswordField from "../components/CustomPasswordField";
+import CustomPasswordField from "../components/custom/CustomPasswordField";
+import CustomInput from "../components/custom/CustomInput";
 
 function ProfilePage() {
   const [togglePassword, setTogglePassword] = useState(false);
@@ -16,24 +17,29 @@ function ProfilePage() {
           </div>
         </div>
 
-        <div className="space-y-1">
-          <label className="label">Profile picture</label>
-          <input type="file" className="file-input" />
-        </div>
+        <CustomInput
+          title="Profile Picture"
+          type="file"
+          placeholder=""
+          required={false}
+          className="file-input"
+        />
 
-        <div className="space-y-1">
-          <label className="label">Username</label>
-          <input type="text" className="input" placeholder="username" />
-        </div>
+        <CustomInput
+          title="Username"
+          type="text"
+          placeholder="username"
+          required={true}
+        />
 
-        <div className="space-y-1">
-          <label className="label">Email</label>
-          <label className="input validator">
-            <Mail size={16} />
-            <input type="email" placeholder="mail@site.com" required />
-          </label>
-          <div className="validator-hint hidden">Enter valid email address</div>
-        </div>
+        <CustomInput
+          title="Email"
+          type="email"
+          placeholder="mail@site.com"
+          required={true}
+          Icon={Mail}
+          invalidHint="Enter valid email address"
+        />
 
         <button
           className="btn btn-outline"

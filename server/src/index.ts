@@ -67,9 +67,9 @@ app.use(async (req, res, next) => {
 });
 
 // Routes
-app.use("/api/", indexRouter);
-app.use("/api/users", userRouter);
-app.use("/api/rolls", rollRouter);
+app.use("/", indexRouter);
+app.use("/users", userRouter);
+app.use("/rolls", rollRouter);
 
 // Start server
 app.listen(port, "0.0.0.0", () => {

@@ -4,24 +4,24 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  getUsers,
+  // getUsers,
 } from "../controllers/userController.js";
 
 const userRouter = Router();
 
 // Get all users (For testing purposes)
-userRouter.get("/", getUsers);
+// userRouter.get("/", getUsers);
 
-// Get user (/api/users/:id)
+// Get user (/users/:id)
 userRouter.get("/:id", getUser);
 
-// Create user (/api/users)
+// Create user (/users)
 userRouter.post("/", createUser);
 
-// Update user (/api/users/:id)
+// Update user (/users/:id)
 userRouter.patch("/:id", updateUser);
 
-// Delete user (/api/users/:id)
+// Delete user (/users/:id)
 userRouter.delete("/:id", deleteUser);
 
 export default userRouter;

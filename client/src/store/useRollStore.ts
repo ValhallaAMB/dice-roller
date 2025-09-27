@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-import type { Roll } from "../dtos/Roll.dot";
+import type { Roll } from "../types/Roll";
 import toast from "react-hot-toast";
 
 type RollState = {
@@ -25,7 +25,7 @@ const useRollStore = create<RollState>((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.get(`${baseURL}/api/rolls`);
+      const res = await axios.get(`${baseURL}/rolls`);
       const data: Roll[] = await res.data;
       set({ rolls: data, error: null });
     } catch (error: any) {
@@ -40,7 +40,7 @@ const useRollStore = create<RollState>((set) => ({
   createRoll: async (userId: number, type: string, result: number) => {
     set({ loading: true });
     try {
-      const res = await axios.post(`${baseURL}/api/rolls`, {
+      const res = await axios.post(`${baseURL}/rolls`, {
         userId,
         type,
         result,
@@ -58,7 +58,7 @@ const useRollStore = create<RollState>((set) => ({
   deleteRoll: async (id: number) => {
     set({ loading: true });
     try {
-      await axios.delete(`${baseURL}/api/rolls/${id}`);
+      await axios.delete(`${baseURL}/rolls/${id}`);
       set((prev) => ({
         rolls: prev.rolls.filter((roll) => roll.id !== id),
       }));
@@ -73,7 +73,7 @@ const useRollStore = create<RollState>((set) => ({
   deleteRolls: async (ids: number[]) => {
     set({ loading: true });
     try {
-      await axios.delete(`${baseURL}/api/rolls`, { data: { ids } });
+      await axios.delete(`${baseURL}/rolls`, { data: { ids } });
       set((prev) => ({
         rolls: prev.rolls.filter((roll) => !ids.includes(roll.id)),
       }));

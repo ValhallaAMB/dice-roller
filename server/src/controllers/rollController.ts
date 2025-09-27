@@ -1,5 +1,5 @@
 import type { Request, Response } from "express-serve-static-core";
-import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient, type Roll } from "../generated/prisma/client.js";
 
 const prisma = new PrismaClient();
 
@@ -19,6 +19,7 @@ const prisma = new PrismaClient();
 //   }
 // };
 
+// Get rolls (/rolls)
 const getRolls = async (req: Request, res: Response) => {
   try {
     const rolls = await prisma.roll.findMany();
@@ -28,7 +29,8 @@ const getRolls = async (req: Request, res: Response) => {
   }
 };
 
-const createRoll = async (req: Request, res: Response) => {
+// Create roll (/rolls)
+const createRoll = async (req: Request<{}, {}, Roll>, res: Response) => {
   try {
     const { userId, result, type } = req.body;
     const newRoll = await prisma.roll.create({
@@ -36,7 +38,6 @@ const createRoll = async (req: Request, res: Response) => {
         userId,
         result,
         type,
-        // createdAt: new Date(), // Automatically set by Prisma
       },
     });
     res.status(201).json(newRoll);
@@ -58,13 +59,12 @@ const createRoll = async (req: Request, res: Response) => {
 //   }
 // };
 
-// Delete roll (/api/rolls/:id) Delete a single roll by ID
-const deleteRoll = async (req: Request, res: Response) => {
+// Delete roll (/rolls/:id) Delete a single roll by ID
+const deleteRoll = async (req: Request<{ id: number }>, res: Response) => {
   try {
-    const { id } = req.params;
     const deletedRoll = await prisma.roll.delete({
       where: {
-        id: Number(id),
+        id: req.params.id,
       },
     });
 
@@ -76,7 +76,7 @@ const deleteRoll = async (req: Request, res: Response) => {
   }
 };
 
-// Delete rolls (/api/rolls) Delete multiple rolls by IDs
+// Delete rolls (/rolls) Delete multiple rolls by IDs
 const deleteRolls = async (req: Request, res: Response) => {
   try {
     const { ids } = req.body; // Expecting an array of IDs to delete

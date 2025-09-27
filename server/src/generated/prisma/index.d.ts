@@ -1008,23 +1008,23 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: number | null
+    pfpBase64: string | null
     email: string | null
     name: string | null
-    createdAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: number | null
+    pfpBase64: string | null
     email: string | null
     name: string | null
-    createdAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
+    pfpBase64: number
     email: number
     name: number
-    createdAt: number
     _all: number
   }
 
@@ -1039,23 +1039,23 @@ export namespace Prisma {
 
   export type UserMinAggregateInputType = {
     id?: true | $Types.Skip
+    pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
     name?: true | $Types.Skip
-    createdAt?: true | $Types.Skip
   }
 
   export type UserMaxAggregateInputType = {
     id?: true | $Types.Skip
+    pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
     name?: true | $Types.Skip
-    createdAt?: true | $Types.Skip
   }
 
   export type UserCountAggregateInputType = {
     id?: true | $Types.Skip
+    pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
     name?: true | $Types.Skip
-    createdAt?: true | $Types.Skip
     _all?: true | $Types.Skip
   }
 
@@ -1147,9 +1147,9 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: number
+    pfpBase64: string | null
     email: string
     name: string
-    createdAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1173,35 +1173,35 @@ export namespace Prisma {
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean | $Types.Skip
+    pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
     name?: boolean | $Types.Skip
-    createdAt?: boolean | $Types.Skip
     roll?: boolean | User$rollArgs<ExtArgs> | $Types.Skip
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs> | $Types.Skip
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean | $Types.Skip
+    pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
     name?: boolean | $Types.Skip
-    createdAt?: boolean | $Types.Skip
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean | $Types.Skip
+    pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
     name?: boolean | $Types.Skip
-    createdAt?: boolean | $Types.Skip
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean | $Types.Skip
+    pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
     name?: boolean | $Types.Skip
-    createdAt?: boolean | $Types.Skip
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "createdAt", ExtArgs["result"]["user"], $Types.Skip>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pfpBase64" | "email" | "name", ExtArgs["result"]["user"], $Types.Skip>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     roll?: boolean | User$rollArgs<ExtArgs> | $Types.Skip
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs> | $Types.Skip
@@ -1216,9 +1216,9 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      pfpBase64: string | null
       email: string
       name: string
-      createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1644,9 +1644,9 @@ export namespace Prisma {
    */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'Int'>
+    readonly pfpBase64: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
-    readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -3193,9 +3193,9 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
+    pfpBase64: 'pfpBase64',
     email: 'email',
-    name: 'name',
-    createdAt: 'createdAt'
+    name: 'name'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3226,6 +3226,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -3297,17 +3305,17 @@ export namespace Prisma {
     OR?: UserWhereInput[] | $Types.Skip
     NOT?: UserWhereInput | UserWhereInput[] | $Types.Skip
     id?: IntFilter<"User"> | number | $Types.Skip
+    pfpBase64?: StringNullableFilter<"User"> | string | null | $Types.Skip
     email?: StringFilter<"User"> | string | $Types.Skip
     name?: StringFilter<"User"> | string | $Types.Skip
-    createdAt?: DateTimeFilter<"User"> | Date | string | $Types.Skip
     roll?: RollListRelationFilter | $Types.Skip
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder | $Types.Skip
+    pfpBase64?: SortOrderInput | SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
     name?: SortOrder | $Types.Skip
-    createdAt?: SortOrder | $Types.Skip
     roll?: RollOrderByRelationAggregateInput | $Types.Skip
   }
 
@@ -3317,16 +3325,16 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[] | $Types.Skip
     OR?: UserWhereInput[] | $Types.Skip
     NOT?: UserWhereInput | UserWhereInput[] | $Types.Skip
+    pfpBase64?: StringNullableFilter<"User"> | string | null | $Types.Skip
     name?: StringFilter<"User"> | string | $Types.Skip
-    createdAt?: DateTimeFilter<"User"> | Date | string | $Types.Skip
     roll?: RollListRelationFilter | $Types.Skip
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder | $Types.Skip
+    pfpBase64?: SortOrderInput | SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
     name?: SortOrder | $Types.Skip
-    createdAt?: SortOrder | $Types.Skip
     _count?: UserCountOrderByAggregateInput | $Types.Skip
     _avg?: UserAvgOrderByAggregateInput | $Types.Skip
     _max?: UserMaxOrderByAggregateInput | $Types.Skip
@@ -3339,9 +3347,9 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[] | $Types.Skip
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[] | $Types.Skip
     id?: IntWithAggregatesFilter<"User"> | number | $Types.Skip
+    pfpBase64?: StringNullableWithAggregatesFilter<"User"> | string | null | $Types.Skip
     email?: StringWithAggregatesFilter<"User"> | string | $Types.Skip
     name?: StringWithAggregatesFilter<"User"> | string | $Types.Skip
-    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string | $Types.Skip
   }
 
   export type RollWhereInput = {
@@ -3402,53 +3410,53 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
+    pfpBase64?: string | null | $Types.Skip
     email: string
     name: string
-    createdAt?: Date | string | $Types.Skip
     roll?: RollCreateNestedManyWithoutUserInput | $Types.Skip
   }
 
   export type UserUncheckedCreateInput = {
     id?: number | $Types.Skip
+    pfpBase64?: string | null | $Types.Skip
     email: string
     name: string
-    createdAt?: Date | string | $Types.Skip
     roll?: RollUncheckedCreateNestedManyWithoutUserInput | $Types.Skip
   }
 
   export type UserUpdateInput = {
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
     roll?: RollUpdateManyWithoutUserNestedInput | $Types.Skip
   }
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
     roll?: RollUncheckedUpdateManyWithoutUserNestedInput | $Types.Skip
   }
 
   export type UserCreateManyInput = {
     id?: number | $Types.Skip
+    pfpBase64?: string | null | $Types.Skip
     email: string
     name: string
-    createdAt?: Date | string | $Types.Skip
   }
 
   export type UserUpdateManyMutationInput = {
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
   }
 
   export type RollCreateInput = {
@@ -3514,6 +3522,21 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number | $Types.Skip
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    lt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    contains?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    startsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    endsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    mode?: QueryMode | $Types.Skip
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null | $Types.Skip
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | $Types.Skip
@@ -3529,21 +3552,15 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string | $Types.Skip
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string | $Types.Skip
-  }
-
   export type RollListRelationFilter = {
     every?: RollWhereInput | $Types.Skip
     some?: RollWhereInput | $Types.Skip
     none?: RollWhereInput | $Types.Skip
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder | $Types.Skip
   }
 
   export type RollOrderByRelationAggregateInput = {
@@ -3552,9 +3569,9 @@ export namespace Prisma {
 
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder | $Types.Skip
+    pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
     name?: SortOrder | $Types.Skip
-    createdAt?: SortOrder | $Types.Skip
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -3563,16 +3580,16 @@ export namespace Prisma {
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder | $Types.Skip
+    pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
     name?: SortOrder | $Types.Skip
-    createdAt?: SortOrder | $Types.Skip
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder | $Types.Skip
+    pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
     name?: SortOrder | $Types.Skip
-    createdAt?: SortOrder | $Types.Skip
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -3595,6 +3612,24 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel> | $Types.Skip
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    lt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    contains?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    startsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    endsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    mode?: QueryMode | $Types.Skip
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null | $Types.Skip
+    _count?: NestedIntNullableFilter<$PrismaModel> | $Types.Skip
+    _min?: NestedStringNullableFilter<$PrismaModel> | $Types.Skip
+    _max?: NestedStringNullableFilter<$PrismaModel> | $Types.Skip
+  }
+
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | $Types.Skip
@@ -3613,7 +3648,7 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel> | $Types.Skip
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+  export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
     notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
@@ -3621,10 +3656,7 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string | $Types.Skip
-    _count?: NestedIntFilter<$PrismaModel> | $Types.Skip
-    _min?: NestedDateTimeFilter<$PrismaModel> | $Types.Skip
-    _max?: NestedDateTimeFilter<$PrismaModel> | $Types.Skip
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string | $Types.Skip
   }
 
   export type UserScalarRelationFilter = {
@@ -3668,6 +3700,20 @@ export namespace Prisma {
     result?: SortOrder | $Types.Skip
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string | $Types.Skip
+    _count?: NestedIntFilter<$PrismaModel> | $Types.Skip
+    _min?: NestedDateTimeFilter<$PrismaModel> | $Types.Skip
+    _max?: NestedDateTimeFilter<$PrismaModel> | $Types.Skip
+  }
+
   export type RollCreateNestedManyWithoutUserInput = {
     create?: XOR<RollCreateWithoutUserInput, RollUncheckedCreateWithoutUserInput> | RollCreateWithoutUserInput[] | RollUncheckedCreateWithoutUserInput[] | $Types.Skip
     connectOrCreate?: RollCreateOrConnectWithoutUserInput | RollCreateOrConnectWithoutUserInput[] | $Types.Skip
@@ -3682,12 +3728,12 @@ export namespace Prisma {
     connect?: RollWhereUniqueInput | RollWhereUniqueInput[] | $Types.Skip
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string | $Types.Skip
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null | $Types.Skip
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | $Types.Skip
+  export type StringFieldUpdateOperationsInput = {
+    set?: string | $Types.Skip
   }
 
   export type RollUpdateManyWithoutUserNestedInput = {
@@ -3732,6 +3778,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | $Types.Skip
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | $Types.Skip
+  }
+
   export type UserUpdateOneRequiredWithoutRollNestedInput = {
     create?: XOR<UserCreateWithoutRollInput, UserUncheckedCreateWithoutRollInput> | $Types.Skip
     connectOrCreate?: UserCreateOrConnectWithoutRollInput | $Types.Skip
@@ -3751,6 +3801,20 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number | $Types.Skip
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    lt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    contains?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    startsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    endsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null | $Types.Skip
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | $Types.Skip
@@ -3763,17 +3827,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     endsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     not?: NestedStringFilter<$PrismaModel> | string | $Types.Skip
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string | $Types.Skip
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -3803,6 +3856,34 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number | $Types.Skip
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null | $Types.Skip
+    lt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    contains?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    startsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    endsWith?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null | $Types.Skip
+    _count?: NestedIntNullableFilter<$PrismaModel> | $Types.Skip
+    _min?: NestedStringNullableFilter<$PrismaModel> | $Types.Skip
+    _max?: NestedStringNullableFilter<$PrismaModel> | $Types.Skip
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null | $Types.Skip
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null | $Types.Skip
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null | $Types.Skip
+    lt?: number | IntFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: number | IntFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: number | IntFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: number | IntFieldRefInput<$PrismaModel> | $Types.Skip
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null | $Types.Skip
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | $Types.Skip
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | $Types.Skip
@@ -3818,6 +3899,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel> | $Types.Skip
     _min?: NestedStringFilter<$PrismaModel> | $Types.Skip
     _max?: NestedStringFilter<$PrismaModel> | $Types.Skip
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel> | $Types.Skip
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string | $Types.Skip
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3885,16 +3977,16 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutRollInput = {
+    pfpBase64?: string | null | $Types.Skip
     email: string
     name: string
-    createdAt?: Date | string | $Types.Skip
   }
 
   export type UserUncheckedCreateWithoutRollInput = {
     id?: number | $Types.Skip
+    pfpBase64?: string | null | $Types.Skip
     email: string
     name: string
-    createdAt?: Date | string | $Types.Skip
   }
 
   export type UserCreateOrConnectWithoutRollInput = {
@@ -3914,16 +4006,16 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutRollInput = {
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
   }
 
   export type UserUncheckedUpdateWithoutRollInput = {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
+    pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
     name?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string | $Types.Skip
   }
 
   export type RollCreateManyUserInput = {

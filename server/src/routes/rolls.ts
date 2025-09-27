@@ -10,22 +10,22 @@ import {
 
 const rollRouter = Router();
 
-// Get roll (/api/rolls/:id)
+// Get roll (/rolls/:id)
 // rollRouter.get("/:id", getRoll);
 
-// Get rolls (/api/rolls)
+// Get rolls (/rolls)
 rollRouter.get("/", getRolls);
 
-// Create roll (/api/rolls)
+// Create roll (/rolls)
 rollRouter.post("/", createRoll);
 
-// Update roll (/api/rolls/:id)
+// Update roll (/rolls/:id)
 // rollRouter.patch("/:id", updateRoll);
 
-// Delete roll (/api/rolls/:id)
+// Delete roll (/rolls/:id)
 rollRouter.delete("/:id", deleteRoll);
 
-// Delete rolls (/api/rolls)
+// Delete rolls (/rolls)
 rollRouter.delete("/", deleteRolls);
 
 export default rollRouter;
