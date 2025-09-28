@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
-import useThemeStore from "store/useThemeStore";
+import useThemeStore from "@store/useThemeStore";
 
 type Props = {
   id: string;

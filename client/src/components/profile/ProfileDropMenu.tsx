@@ -1,7 +1,8 @@
 import { LogOut, User, UserPen } from "lucide-react";
 // import { useState } from "react";
 import { Link } from "react-router-dom";
-import InputModal from "../common/InputModal";
+import LoginModal from "@components/auth/LoginModal";
+import SignUpModal from "@components/auth/SignUpModal";
 
 function ProfileDropMenu() {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -34,11 +35,8 @@ function ProfileDropMenu() {
           </>
         ) : (
           <li>
-            <InputModal
-              id="login-modal"
-              title="Login/Sign Up"
-              message="Please enter your credentials"
-            />
+            <LoginModal />
+            <SignUpModal />
           </li>
         )}
       </ul>

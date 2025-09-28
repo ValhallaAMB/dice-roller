@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
-import type { Roll } from "types/Roll";
 import toast from "react-hot-toast";
+import type { Roll } from "../types/Roll";
 
 type RollState = {
   rolls: Array<Roll>;

@@ -19,18 +19,7 @@ function App() {
         <Route path="/profile/:id" element={<ProfilePage />} />
       </Routes>
 
-      <Toaster
-        position="bottom-right"
-        reverseOrder={false}
-        toastOptions={{
-          success: {
-            className: "alert alert-info",
-          },
-          error: {
-            className: "alert alert-error",
-          },
-        }}
-      />
+      <Toaster position="bottom-right" reverseOrder={false} />
     </main>
   );
 }

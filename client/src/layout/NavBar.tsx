@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import ThemeSwitcher from "components/theme/ThemeSwitcher";
-import HistoryDropMenu from "components/history/HistoryDropMenu";
-import ProfileDropMenu from "components/profile/ProfileDropMenu";
-import useThemeStore from "store/useThemeStore";
+import ThemeSwitcher from "@components/theme/ThemeSwitcher";
+import HistoryDropMenu from "@components/history/HistoryDropMenu";
+import ProfileDropMenu from "@components/profile/ProfileDropMenu";
+import useThemeStore from "@store/useThemeStore";
 import { twMerge } from "tailwind-merge";
 
 function NavBar() {

@@ -23,8 +23,14 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* BaseURL */
-    "baseUrl": "src"
+    /* Import paths */
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@layouts/*": ["layouts/*"],
+      "@pages/*": ["pages/*"],
+      "@store/*": ["store/*"],
+    },
   },
   "include": ["src"]
 }

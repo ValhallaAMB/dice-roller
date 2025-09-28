@@ -1,34 +1,49 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { User } from "types/User";
+import type { User } from "../types/User";
 import toast from "react-hot-toast";
 
 type UserState = {
-  users: User[];
+  user: User;
   loading: boolean;
   error: string | null;
-  fetchUsers: () => Promise<void>;
+  fetchUser: () => Promise<void>;
+  createUser: () => Promise<void>;
   deleteUser: (id: number) => void;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
 const useUserStore = create<UserState>((set) => ({
-  users: [],
+  user: {} as User,
   loading: false,
   error: null,
 
-  fetchUsers: async () => {
+  fetchUser: async () => {
     set({ loading: true });
 
     try {
       const res = await axios.get(`${baseURL}/users`);
-      const data: User[] = await res.data;
-      set({ users: data, error: null });
+      const data: User = await res.data;
+      set({ user: data, error: null });
     } catch (error: any) {
       if (error.status == 429)
-        set({ error: "Too many requests - try again later", users: [] });
-      else set({ error: "Failed to fetch users", users: [] });
+        set({ error: "Too many requests - try again later", user: {} as User });
+      else set({ error: "Failed to fetch users", user: {} as User });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  createUser: async () => {
+    set({ loading: true });
+
+    try {
+      const res = await axios.post(`${baseURL}/users`);
+      const newUser: User = await res.data;
+      set({ user: newUser, error: null });
+    } catch (error) {
+      set({ error: "Failed to create user" });
     } finally {
       set({ loading: false });
     }
@@ -38,9 +53,7 @@ const useUserStore = create<UserState>((set) => ({
     set({ loading: true });
     try {
       await axios.delete(`${baseURL}/users/${id}`);
-      set((prev) => ({
-        users: prev.users.filter((user) => user.id !== id),
-      }));
+      set({ user: {} as User, error: null });
       toast.success("User deleted successfully");
     } catch (error) {
       toast.error("Failed to delete user");

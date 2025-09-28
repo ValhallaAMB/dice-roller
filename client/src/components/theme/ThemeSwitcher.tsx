@@ -1,5 +1,5 @@
 import { Moon, Sun } from "lucide-react";
-import useThemeStore from "store/useThemeStore";
+import useThemeStore from "@store/useThemeStore";
 
 function ThemeSwitcher() {
   const { theme, setTheme } = useThemeStore();

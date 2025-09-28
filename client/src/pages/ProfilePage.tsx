@@ -1,7 +1,6 @@
 import { Mail } from "lucide-react";
 import { useState } from "react";
-import CustomPasswordField from "components/common/CustomPasswordField";
-import CustomInput from "components/common/CustomInput";
+import CustomInput from "@components/common/CustomInput";
 
 function ProfilePage() {
   const [togglePassword, setTogglePassword] = useState(false);
@@ -50,13 +49,17 @@ function ProfilePage() {
 
         {togglePassword && (
           <>
-            <CustomPasswordField
-              required={togglePassword}
+            <CustomInput
               title="New Password"
-            />
-            <CustomPasswordField
+              type="password"
+              placeholder="New Password"
               required={togglePassword}
+            />
+            <CustomInput
               title="Confirm New Password"
+              type="password"
+              placeholder="Confirm New Password"
+              required={togglePassword}
             />
           </>
         )}
