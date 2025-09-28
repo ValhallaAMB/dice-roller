@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { User } from "../types/User";
+import type { User } from "types/User";
 import toast from "react-hot-toast";
 
 type UserState = {

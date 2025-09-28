@@ -1,7 +1,7 @@
 import { FileUser, LogIn, Mail } from "lucide-react";
 import { createPortal } from "react-dom";
 import CustomInput from "./CustomInput";
-import useThemeStore from "../../store/useThemeStore";
+import useThemeStore from "store/useThemeStore";
 
 type Props = {
   id: string;

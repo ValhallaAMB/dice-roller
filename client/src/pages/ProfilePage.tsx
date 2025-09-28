@@ -1,7 +1,7 @@
 import { Mail } from "lucide-react";
 import { useState } from "react";
-import CustomPasswordField from "../components/custom/CustomPasswordField";
-import CustomInput from "../components/custom/CustomInput";
+import CustomPasswordField from "components/common/CustomPasswordField";
+import CustomInput from "components/common/CustomInput";
 
 function ProfilePage() {
   const [togglePassword, setTogglePassword] = useState(false);

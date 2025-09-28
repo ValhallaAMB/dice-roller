@@ -1,7 +1,7 @@
 import { LogOut, User, UserPen } from "lucide-react";
 // import { useState } from "react";
 import { Link } from "react-router-dom";
-import InputModal from "./custom/InputModal";
+import InputModal from "../common/InputModal";
 
 function ProfileDropMenu() {
   // const [loggedIn, setLoggedIn] = useState(false);

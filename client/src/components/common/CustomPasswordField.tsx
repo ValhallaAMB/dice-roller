@@ -1,6 +1,6 @@
 import { Eye, EyeOff, Key } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import useThemeStore from "../../store/useThemeStore";
+import useThemeStore from "store/useThemeStore";
 import { useState } from "react";
 
 type Props = {
