@@ -9,7 +9,7 @@ type UserState = {
   error: string | null;
   fetchUser: () => Promise<void>;
   createUser: (user: userWithoutId) => Promise<void>;
-  deleteUser: (id: number) => void;
+  deleteUser: (id: number) => Promise<void>;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;

@@ -8,10 +8,10 @@ function HomePage() {
   const [result, setResult] = useState(0);
   const [sides, setSides] = useState(-1);
 
-  const rollDice = (dice: number): void => {
+  const rollDice = async (dice: number): Promise<void> => {
     const result = Math.floor(Math.random() * dice) + 1;
     setResult(result);
-    createRoll(1, "D" + sides, result);
+    await createRoll(1, "D" + sides, result);
   };
 
   // console.log(users, loading, error);

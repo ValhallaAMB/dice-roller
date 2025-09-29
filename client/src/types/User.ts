@@ -5,4 +5,9 @@ export type User = {
   pfpBase64: string | null;
 };
 
-export type userWithoutId = Omit<User, "id">;
+export type UserWithoutId = Omit<User, "id">;
+
+export type UserLogin = {
+  email: string;
+  password: string;
+};

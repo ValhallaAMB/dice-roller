@@ -12,8 +12,12 @@ function HistoryDropMenu() {
   const { theme } = useThemeStore();
 
   useEffect(() => {
-    fetchRolls();
-  }, [fetchRolls]);
+    const getRolls = async () => {
+      await fetchRolls();
+    };
+
+    getRolls();
+  }, [rolls.length]);
 
   return (
     <div className="dropdown dropdown-end">
@@ -103,7 +107,7 @@ function HistoryDropMenu() {
                         title="Delete"
                         message={`Are you sure you want to delete roll #${roll.id}?`}
                         twBtnStyle="btn-error"
-                        func={() => deleteRoll(roll.id)}
+                        func={async () => await deleteRoll(roll.id)}
                       />
                     </td>
                   </tr>
@@ -130,8 +134,8 @@ function HistoryDropMenu() {
                       }
                       message={`Are you sure you want to delete ${selectedIds.length} roll(s)?`}
                       twBtnStyle="btn-error"
-                      func={() => {
-                        deleteRolls(selectedIds);
+                      func={async () => {
+                        await deleteRolls(selectedIds);
                         setSelectedIds([]);
                       }}
                     />

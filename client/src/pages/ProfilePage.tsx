@@ -1,9 +1,29 @@
-import { Mail } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
+import useUserStore from "@stores/useUserStore";
+import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
-import CustomInput from "@components/common/CustomInput";
+import { useForm } from "react-hook-form";
 
 function ProfilePage() {
+  const { loading } = useUserStore();
   const [togglePassword, setTogglePassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    // resolver: zodResolver(),
+  });
+
+  const submitHandler = async (data: any) => {
+    const user = {};
+    // await login(user);
+    console.log(user);
+    // reset();
+  };
 
   return (
     <main className="mt-7 grid place-items-center">
@@ -16,55 +36,90 @@ function ProfilePage() {
           </div>
         </div>
 
-        <CustomInput
-          title="Profile Picture"
-          type="file"
-          placeholder=""
-          required={false}
-          className="file-input"
-        />
-
-        <CustomInput
-          title="Username"
-          type="text"
-          placeholder="username"
-          required={true}
-        />
-
-        <CustomInput
-          title="Email"
-          type="email"
-          placeholder="mail@site.com"
-          required={true}
-          Icon={Mail}
-          invalidHint="Enter valid email address"
-        />
-
-        <button
-          className="btn btn-outline"
-          onClick={() => setTogglePassword(!togglePassword)}
-        >
-          Change Password
-        </button>
-
-        {togglePassword && (
-          <>
-            <CustomInput
-              title="New Password"
-              type="password"
-              placeholder="New Password"
-              required={togglePassword}
+        <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
+          <p className="mb-1">Profile Picture</p>
+          <section className="input">
+            <input
+              placeholder="Profile Picture"
+              type="file"
+              {...register("profilePicture")}
             />
-            <CustomInput
-              title="Confirm New Password"
-              type="password"
-              placeholder="Confirm New Password"
-              required={togglePassword}
-            />
-          </>
-        )}
+          </section>
+          {errors.profilePicture && <p className="text-error text-xs">{}</p>}
 
-        <button className="btn btn-primary mt-1">save</button>
+          <p className="mb-1">Username</p>
+          <section className="input">
+            <User size={16} />
+            <input
+              placeholder="Username"
+              type="text"
+              {...register("username")}
+            />
+          </section>
+          {errors.username && <p className="text-error text-xs">{}</p>}
+
+          <p className="mb-1">Email</p>
+          <section className="input">
+            <Mail size={16} />
+            <input placeholder="Email" type="email" {...register("email")} />
+          </section>
+          {errors.email && <p className="text-error text-xs">{}</p>}
+
+          <button
+            className="btn btn-outline"
+            onClick={() => setTogglePassword(!togglePassword)}
+          >
+            Change Password
+          </button>
+
+          {togglePassword && (
+            <>
+              <p className="mb-1">Password</p>
+              <section className="input">
+                <Key size={16} />
+                <input
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  required
+                />
+                <button
+                  type="button"
+                  className="-m-2 cursor-pointer p-2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </section>
+
+              <p className="mb-1">Confirm Password</p>
+              <section className="input">
+                <Key size={16} />
+                <input
+                  placeholder="Confirm Password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("confirmPassword")}
+                  required
+                />
+                <button
+                  type="button"
+                  className="-m-2 cursor-pointer p-2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </section>
+            </>
+          )}
+
+          <button
+            className="btn btn-primary mt-1"
+            type="submit"
+            disabled={loading}
+          >
+            save
+          </button>
+        </form>
       </fieldset>
     </main>
   );

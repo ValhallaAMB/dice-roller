@@ -9,9 +9,9 @@ type RollState = {
   error: string | null;
 
   fetchRolls: () => Promise<void>;
-  deleteRoll: (id: number) => void;
-  createRoll: (userId: number, type: string, result: number) => void;
-  deleteRolls: (ids: number[]) => void;
+  deleteRoll: (id: number) => Promise<void>;
+  createRoll: (userId: number, type: string, result: number) => Promise<void>;
+  deleteRolls: (ids: number[]) => Promise<void>;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;

@@ -11,8 +11,8 @@ export default defineConfig({
       "@layout": "/src/layout",
       "@pages": "/src/pages",
       "@stores": "/src/stores",
-      "@types": "/src/types",
-      "@schemas": "/src/schemas",
+      "types": "/src/types",
+      "schemas": "/src/schemas",
     },
   },
 });

@@ -30,8 +30,8 @@
       "@layout/*": ["layout/*"],
       "@pages/*": ["pages/*"],
       "@stores/*": ["stores/*"],
-      "@types/*": ["types/*"],
-      "@schemas/*": ["schemas/*"],
+      "types/*": ["types/*"],
+      "schemas/*": ["schemas/*"],
     },
   },
   "include": ["src"]

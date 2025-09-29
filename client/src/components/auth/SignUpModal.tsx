@@ -3,13 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
 import { Mail, User, UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { SignUpSchema, type SignUpData } from "@schemas/SignUpSchema";
-import type { userWithoutId } from "types/User";
-import { useEffect, useState } from "react";
+import { SignUpSchema, type SignUpData } from "schemas/SignUpSchema";
+import type { UserWithoutId } from "types/User";
+import { useRef } from "react";
+import type { ModalHandle } from "types/Modal";
 
 function SignUpModal() {
   const { loading = false, createUser } = useUserStore();
-  const [isClosed, setIsClosed] = useState(false);
+  const modalRef = useRef<ModalHandle>(null);
 
   const {
     register,
@@ -20,20 +21,16 @@ function SignUpModal() {
     resolver: zodResolver(SignUpSchema),
   });
 
-  const submitHandler = (data: SignUpData) => {
-    const user: userWithoutId = {
+  const submitHandler = async (data: SignUpData) => {
+    const user: UserWithoutId = {
       username: data.username,
       email: data.email,
       pfpBase64: null,
     };
-    createUser(user);
-    setIsClosed(true);
+    await createUser(user);
+    modalRef.current?.closeModal();
     reset();
   };
-
-  useEffect(() => {
-    setIsClosed(false);
-  }, [isClosed]);
 
   return (
     <>
@@ -42,7 +39,7 @@ function SignUpModal() {
         Icon={UserPlus}
         title="Sign Up"
         message="Please enter your details"
-        isClosed={isClosed}
+        ref={modalRef}
       >
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
           <p className="mb-1">Username</p>
