@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import ThemeSwitcher from "@components/theme/ThemeSwitcher";
 import HistoryDropMenu from "@components/history/HistoryDropMenu";
 import ProfileDropMenu from "@components/profile/ProfileDropMenu";
-import useThemeStore from "@store/useThemeStore";
+import useThemeStore from "@stores/useThemeStore";
 import { twMerge } from "tailwind-merge";
 
 function NavBar() {

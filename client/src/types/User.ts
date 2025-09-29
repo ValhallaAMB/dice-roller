@@ -1,6 +1,8 @@
 export type User = {
   id: number;
-  pfpBase64: string | null;
-  name: string;
+  username: string;
   email: string;
+  pfpBase64: string | null;
 };
+
+export type userWithoutId = Omit<User, "id">;

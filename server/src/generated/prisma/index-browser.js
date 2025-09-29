@@ -126,7 +126,7 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   pfpBase64: 'pfpBase64',
   email: 'email',
-  name: 'name'
+  username: 'username'
 };
 
 exports.Prisma.RollScalarFieldEnum = {

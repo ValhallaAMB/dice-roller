@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
-import useThemeStore from "@store/useThemeStore";
+import useThemeStore from "@stores/useThemeStore";
 
 type Props = {
   id: string;
@@ -51,7 +51,7 @@ export default function NotificationModal({
           className="modal modal-bottom sm:modal-middle"
           data-theme={theme}
         >
-          <div className="modal-box bg-base-200 text-base-content">
+          <div className="modal-box bg-base-200 text-base-content shadow">
             <h3 className="text-lg font-bold">{name}</h3>
             <p className="py-4">{message}</p>
             <div className="modal-action">

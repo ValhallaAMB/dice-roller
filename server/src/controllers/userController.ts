@@ -41,10 +41,10 @@ const createUser = async (
   res: Response
 ) => {
   try {
-    const { name, email, pfpBase64 } = req.body;
+    const { username, email, pfpBase64 } = req.body;
     const newUser = await prisma.user.create({
       data: {
-        name,
+        username,
         email,
         pfpBase64,
       },
@@ -61,10 +61,10 @@ const updateUser = async (
   res: Response
 ) => {
   try {
-    const { name, email, pfpBase64 } = req.body;
+    const { username, email, pfpBase64 } = req.body;
     const updateUser = await prisma.user.update({
       where: { id: Number(req.params.id) },
-      data: { name, email, pfpBase64 },
+      data: { username, email, pfpBase64 },
     });
 
     res.json(updateUser);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { User } from "../types/User";
+import type { userWithoutId, User } from "../types/User";
 import toast from "react-hot-toast";
 
 type UserState = {
@@ -8,7 +8,7 @@ type UserState = {
   loading: boolean;
   error: string | null;
   fetchUser: () => Promise<void>;
-  createUser: () => Promise<void>;
+  createUser: (user: userWithoutId) => Promise<void>;
   deleteUser: (id: number) => void;
 };
 
@@ -35,14 +35,16 @@ const useUserStore = create<UserState>((set) => ({
     }
   },
 
-  createUser: async () => {
+  createUser: async (user: userWithoutId) => {
     set({ loading: true });
 
     try {
-      const res = await axios.post(`${baseURL}/users`);
+      const res = await axios.post(`${baseURL}/users`, user);
       const newUser: User = await res.data;
+      toast.success("User created successfully");
       set({ user: newUser, error: null });
     } catch (error) {
+      toast.error("Failed to create user");
       set({ error: "Failed to create user" });
     } finally {
       set({ loading: false });

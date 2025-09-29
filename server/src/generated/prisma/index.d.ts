@@ -1010,21 +1010,21 @@ export namespace Prisma {
     id: number | null
     pfpBase64: string | null
     email: string | null
-    name: string | null
+    username: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: number | null
     pfpBase64: string | null
     email: string | null
-    name: string | null
+    username: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     pfpBase64: number
     email: number
-    name: number
+    username: number
     _all: number
   }
 
@@ -1041,21 +1041,21 @@ export namespace Prisma {
     id?: true | $Types.Skip
     pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
-    name?: true | $Types.Skip
+    username?: true | $Types.Skip
   }
 
   export type UserMaxAggregateInputType = {
     id?: true | $Types.Skip
     pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
-    name?: true | $Types.Skip
+    username?: true | $Types.Skip
   }
 
   export type UserCountAggregateInputType = {
     id?: true | $Types.Skip
     pfpBase64?: true | $Types.Skip
     email?: true | $Types.Skip
-    name?: true | $Types.Skip
+    username?: true | $Types.Skip
     _all?: true | $Types.Skip
   }
 
@@ -1149,7 +1149,7 @@ export namespace Prisma {
     id: number
     pfpBase64: string | null
     email: string
-    name: string
+    username: string
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1175,7 +1175,7 @@ export namespace Prisma {
     id?: boolean | $Types.Skip
     pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
-    name?: boolean | $Types.Skip
+    username?: boolean | $Types.Skip
     roll?: boolean | User$rollArgs<ExtArgs> | $Types.Skip
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs> | $Types.Skip
   }, ExtArgs["result"]["user"]>
@@ -1184,24 +1184,24 @@ export namespace Prisma {
     id?: boolean | $Types.Skip
     pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
-    name?: boolean | $Types.Skip
+    username?: boolean | $Types.Skip
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean | $Types.Skip
     pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
-    name?: boolean | $Types.Skip
+    username?: boolean | $Types.Skip
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean | $Types.Skip
     pfpBase64?: boolean | $Types.Skip
     email?: boolean | $Types.Skip
-    name?: boolean | $Types.Skip
+    username?: boolean | $Types.Skip
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pfpBase64" | "email" | "name", ExtArgs["result"]["user"], $Types.Skip>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pfpBase64" | "email" | "username", ExtArgs["result"]["user"], $Types.Skip>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     roll?: boolean | User$rollArgs<ExtArgs> | $Types.Skip
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs> | $Types.Skip
@@ -1218,7 +1218,7 @@ export namespace Prisma {
       id: number
       pfpBase64: string | null
       email: string
-      name: string
+      username: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1646,7 +1646,7 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'Int'>
     readonly pfpBase64: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly name: FieldRef<"User", 'String'>
+    readonly username: FieldRef<"User", 'String'>
   }
     
 
@@ -3195,7 +3195,7 @@ export namespace Prisma {
     id: 'id',
     pfpBase64: 'pfpBase64',
     email: 'email',
-    name: 'name'
+    username: 'username'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3307,7 +3307,7 @@ export namespace Prisma {
     id?: IntFilter<"User"> | number | $Types.Skip
     pfpBase64?: StringNullableFilter<"User"> | string | null | $Types.Skip
     email?: StringFilter<"User"> | string | $Types.Skip
-    name?: StringFilter<"User"> | string | $Types.Skip
+    username?: StringFilter<"User"> | string | $Types.Skip
     roll?: RollListRelationFilter | $Types.Skip
   }
 
@@ -3315,7 +3315,7 @@ export namespace Prisma {
     id?: SortOrder | $Types.Skip
     pfpBase64?: SortOrderInput | SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
-    name?: SortOrder | $Types.Skip
+    username?: SortOrder | $Types.Skip
     roll?: RollOrderByRelationAggregateInput | $Types.Skip
   }
 
@@ -3326,7 +3326,7 @@ export namespace Prisma {
     OR?: UserWhereInput[] | $Types.Skip
     NOT?: UserWhereInput | UserWhereInput[] | $Types.Skip
     pfpBase64?: StringNullableFilter<"User"> | string | null | $Types.Skip
-    name?: StringFilter<"User"> | string | $Types.Skip
+    username?: StringFilter<"User"> | string | $Types.Skip
     roll?: RollListRelationFilter | $Types.Skip
   }, "id" | "email">
 
@@ -3334,7 +3334,7 @@ export namespace Prisma {
     id?: SortOrder | $Types.Skip
     pfpBase64?: SortOrderInput | SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
-    name?: SortOrder | $Types.Skip
+    username?: SortOrder | $Types.Skip
     _count?: UserCountOrderByAggregateInput | $Types.Skip
     _avg?: UserAvgOrderByAggregateInput | $Types.Skip
     _max?: UserMaxOrderByAggregateInput | $Types.Skip
@@ -3349,7 +3349,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"User"> | number | $Types.Skip
     pfpBase64?: StringNullableWithAggregatesFilter<"User"> | string | null | $Types.Skip
     email?: StringWithAggregatesFilter<"User"> | string | $Types.Skip
-    name?: StringWithAggregatesFilter<"User"> | string | $Types.Skip
+    username?: StringWithAggregatesFilter<"User"> | string | $Types.Skip
   }
 
   export type RollWhereInput = {
@@ -3412,7 +3412,7 @@ export namespace Prisma {
   export type UserCreateInput = {
     pfpBase64?: string | null | $Types.Skip
     email: string
-    name: string
+    username: string
     roll?: RollCreateNestedManyWithoutUserInput | $Types.Skip
   }
 
@@ -3420,14 +3420,14 @@ export namespace Prisma {
     id?: number | $Types.Skip
     pfpBase64?: string | null | $Types.Skip
     email: string
-    name: string
+    username: string
     roll?: RollUncheckedCreateNestedManyWithoutUserInput | $Types.Skip
   }
 
   export type UserUpdateInput = {
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
     roll?: RollUpdateManyWithoutUserNestedInput | $Types.Skip
   }
 
@@ -3435,7 +3435,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
     roll?: RollUncheckedUpdateManyWithoutUserNestedInput | $Types.Skip
   }
 
@@ -3443,20 +3443,20 @@ export namespace Prisma {
     id?: number | $Types.Skip
     pfpBase64?: string | null | $Types.Skip
     email: string
-    name: string
+    username: string
   }
 
   export type UserUpdateManyMutationInput = {
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
   }
 
   export type RollCreateInput = {
@@ -3571,7 +3571,7 @@ export namespace Prisma {
     id?: SortOrder | $Types.Skip
     pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
-    name?: SortOrder | $Types.Skip
+    username?: SortOrder | $Types.Skip
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -3582,14 +3582,14 @@ export namespace Prisma {
     id?: SortOrder | $Types.Skip
     pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
-    name?: SortOrder | $Types.Skip
+    username?: SortOrder | $Types.Skip
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder | $Types.Skip
     pfpBase64?: SortOrder | $Types.Skip
     email?: SortOrder | $Types.Skip
-    name?: SortOrder | $Types.Skip
+    username?: SortOrder | $Types.Skip
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -3979,14 +3979,14 @@ export namespace Prisma {
   export type UserCreateWithoutRollInput = {
     pfpBase64?: string | null | $Types.Skip
     email: string
-    name: string
+    username: string
   }
 
   export type UserUncheckedCreateWithoutRollInput = {
     id?: number | $Types.Skip
     pfpBase64?: string | null | $Types.Skip
     email: string
-    name: string
+    username: string
   }
 
   export type UserCreateOrConnectWithoutRollInput = {
@@ -4008,14 +4008,14 @@ export namespace Prisma {
   export type UserUpdateWithoutRollInput = {
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
   }
 
   export type UserUncheckedUpdateWithoutRollInput = {
     id?: IntFieldUpdateOperationsInput | number | $Types.Skip
     pfpBase64?: NullableStringFieldUpdateOperationsInput | string | null | $Types.Skip
     email?: StringFieldUpdateOperationsInput | string | $Types.Skip
-    name?: StringFieldUpdateOperationsInput | string | $Types.Skip
+    username?: StringFieldUpdateOperationsInput | string | $Types.Skip
   }
 
   export type RollCreateManyUserInput = {

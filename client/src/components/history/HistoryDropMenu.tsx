@@ -1,9 +1,9 @@
 import { HistoryIcon } from "lucide-react";
-import useRollStore from "@store/useRollStore";
+import useRollStore from "@stores/useRollStore";
 import { useEffect, useState } from "react";
-import NotificationModal from "../common/NotificationModal";
+import NotificationModal from "@components/common/NotificationModal";
 import { twMerge } from "tailwind-merge";
-import useThemeStore from "@store/useThemeStore";
+import useThemeStore from "@stores/useThemeStore";
 
 function HistoryDropMenu() {
   const { rolls, loading, error, fetchRolls, deleteRoll, deleteRolls } =

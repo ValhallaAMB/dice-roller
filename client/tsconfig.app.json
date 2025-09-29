@@ -27,9 +27,11 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
-      "@layouts/*": ["layouts/*"],
+      "@layout/*": ["layout/*"],
       "@pages/*": ["pages/*"],
-      "@store/*": ["store/*"],
+      "@stores/*": ["stores/*"],
+      "@types/*": ["types/*"],
+      "@schemas/*": ["schemas/*"],
     },
   },
   "include": ["src"]

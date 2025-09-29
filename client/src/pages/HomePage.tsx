@@ -1,6 +1,6 @@
 import { useState } from "react";
 // import useUserStore from "../store/useUserStore";
-import useRollStore from "@store/useRollStore";
+import useRollStore from "@stores/useRollStore";
 
 function HomePage() {
   // const { users, loading, error, fetchUsers } = useUserStore();
