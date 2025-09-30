@@ -15,4 +15,4 @@ export const SignUpSchema = z.object({
   //   password: z.string().min(6).max(100),
 });
 
-export type SignUpData = z.infer<typeof SignUpSchema>;
+export type SignUpForm = z.infer<typeof SignUpSchema>;

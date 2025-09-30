@@ -5,7 +5,7 @@ import LoginModal from "@components/auth/LoginModal";
 
 function ProfileDropMenu() {
   // const [loggedIn, setLoggedIn] = useState(false);
-  const loggedIn = false;
+  const loggedIn = true;
 
   return (
     <div className="dropdown dropdown-end">

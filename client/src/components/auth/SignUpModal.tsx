@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
 import { Mail, User, UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { SignUpSchema, type SignUpData } from "schemas/SignUpSchema";
+import { SignUpSchema, type SignUpForm } from "schemas/SignUpSchema";
 import type { UserWithoutId } from "types/User";
 import { useRef } from "react";
 import type { ModalHandle } from "types/Modal";
@@ -17,11 +17,11 @@ function SignUpModal() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<SignUpData>({
+  } = useForm<SignUpForm>({
     resolver: zodResolver(SignUpSchema),
   });
 
-  const submitHandler = async (data: SignUpData) => {
+  const submitHandler = async (data: SignUpForm) => {
     const user: UserWithoutId = {
       username: data.username,
       email: data.email,

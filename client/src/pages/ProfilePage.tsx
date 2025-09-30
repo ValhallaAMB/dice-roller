@@ -3,6 +3,10 @@ import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import {
+  ProfileEditSchema,
+  type ProfileEditForm,
+} from "schemas/ProfileEditSchema";
 
 function ProfilePage() {
   const { loading } = useUserStore();
@@ -14,21 +18,31 @@ function ProfilePage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
-    // resolver: zodResolver(),
+  } = useForm<ProfileEditForm>({
+    resolver: zodResolver(ProfileEditSchema),
   });
 
-  const submitHandler = async (data: any) => {
-    const user = {};
+  const submitHandler = async (data: ProfileEditForm) => {
+    const user = {
+      username: data.username,
+      email: data.email,
+      pfpBase64: data.pfp,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+    };
     // await login(user);
     console.log(user);
-    // reset();
+    reset({
+      pfp: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
 
   return (
     <main className="mt-7 grid place-items-center">
-      <fieldset className="fieldset bg-base-100 border-base-content/10 rounded-box w-xs space-y-1 border p-4 [&>*]:text-sm">
-        <legend className="fieldset-legend">Profile Page</legend>
+      <fieldset className="fieldset bg-base-100 border-base-content/10 rounded-box w-xs space-y-1 border p-4">
+        <legend className="fieldset-legend text-xl">{"Name"}'s Profile</legend>
 
         <div className="avatar mb-2 justify-center">
           <div className="w-32 rounded-full">
@@ -38,14 +52,10 @@ function ProfilePage() {
 
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
           <p className="mb-1">Profile Picture</p>
-          <section className="input">
-            <input
-              placeholder="Profile Picture"
-              type="file"
-              {...register("profilePicture")}
-            />
-          </section>
-          {errors.profilePicture && <p className="text-error text-xs">{}</p>}
+          <input type="file" className="file-input" {...register("pfp")} />
+          {errors.pfp && (
+            <p className="text-error text-xs">{errors.pfp.message}</p>
+          )}
 
           <p className="mb-1">Username</p>
           <section className="input">
@@ -56,17 +66,22 @@ function ProfilePage() {
               {...register("username")}
             />
           </section>
-          {errors.username && <p className="text-error text-xs">{}</p>}
+          {errors.username && (
+            <p className="text-error text-xs">{errors.username.message}</p>
+          )}
 
           <p className="mb-1">Email</p>
           <section className="input">
             <Mail size={16} />
             <input placeholder="Email" type="email" {...register("email")} />
           </section>
-          {errors.email && <p className="text-error text-xs">{}</p>}
+          {errors.email && (
+            <p className="text-error text-xs">{errors.email.message}</p>
+          )}
 
           <button
-            className="btn btn-outline"
+            className="btn btn-outline mx-auto block w-8/12"
+            type="button"
             onClick={() => setTogglePassword(!togglePassword)}
           >
             Change Password
@@ -81,7 +96,6 @@ function ProfilePage() {
                   placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  required
                 />
                 <button
                   type="button"
@@ -91,6 +105,9 @@ function ProfilePage() {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </section>
+              {errors.password && (
+                <p className="text-error text-xs">{errors.password.message}</p>
+              )}
 
               <p className="mb-1">Confirm Password</p>
               <section className="input">
@@ -99,7 +116,6 @@ function ProfilePage() {
                   placeholder="Confirm Password"
                   type={showPassword ? "text" : "password"}
                   {...register("confirmPassword")}
-                  required
                 />
                 <button
                   type="button"
@@ -109,15 +125,19 @@ function ProfilePage() {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </section>
+              {errors.confirmPassword && (
+                <p className="text-error text-xs">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             </>
           )}
 
           <button
-            className="btn btn-primary mt-1"
+            className="btn btn-primary mx-auto block w-8/12"
             type="submit"
-            disabled={loading}
           >
-            save
+            Update Profile
           </button>
         </form>
       </fieldset>

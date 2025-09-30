@@ -4,7 +4,7 @@ import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, LogIn, Mail } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginSchema, type LoginData } from "schemas/LoginSchema";
+import { LoginSchema, type LoginForm } from "schemas/LoginSchema";
 import type { ModalHandle } from "types/Modal";
 import type { UserLogin } from "types/User";
 
@@ -20,11 +20,11 @@ function LoginModal({}: Props) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<LoginData>({
+  } = useForm<LoginForm>({
     resolver: zodResolver(LoginSchema),
   });
 
-  const submitHandler = async (data: LoginData) => {
+  const submitHandler = async (data: LoginForm) => {
     const user: UserLogin = {
       email: data.email,
       password: data.password,
