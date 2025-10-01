@@ -3,7 +3,8 @@ import type {
   Request,
   Response,
 } from "express-serve-static-core";
-import { PrismaClient, type User } from "../generated/prisma/client.js";
+import { PrismaClient, type User } from "generated/prisma/client.js";
+import errorHandler  from "utils/errorHandler.js";
 
 // Global Prisma client instance
 const prisma = new PrismaClient();
@@ -13,8 +14,10 @@ const prisma = new PrismaClient();
 //   try {
 //     const users = await prisma.user.findMany();
 //     res.json(users);
-//   } catch (error: any) {
-//     res.status(500).json({ message: `Error fetching users ${error.message}` });
+//   } catch (error) {
+// const { status, error: errorResponse } = errorHandler(error);
+// res.status(status).json({ message: errorResponse });
+// res.status(500).json({ message: errorHandler(error) });
 //   }
 // };
 
@@ -30,8 +33,10 @@ const getUser = async (req: Request<{ id: number }>, res: Response) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     res.json(user);
-  } catch (error: any) {
-    res.status(500).json({ message: `Error fetching user ${error.message}` });
+  } catch (error) {
+    const { status, error: errorResponse } = errorHandler(error);
+    res.status(status).json({ message: errorResponse });
+    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 
@@ -50,8 +55,10 @@ const createUser = async (
       },
     });
     res.status(201).json(newUser);
-  } catch (error: any) {
-    res.status(500).json({ message: `Error creating user ${error.message}` });
+  } catch (error) {
+    const { status, error: errorResponse } = errorHandler(error);
+    res.status(status).json({ message: errorResponse });
+    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 
@@ -68,8 +75,10 @@ const updateUser = async (
     });
 
     res.json(updateUser);
-  } catch (error: any) {
-    res.status(500).json({ message: `Error updating user ${error.message}` });
+  } catch (error) {
+    const { status, error: errorResponse } = errorHandler(error);
+    res.status(status).json({ message: errorResponse });
+    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 
@@ -85,8 +94,10 @@ const deleteUser = async (req: Request<{ id: number }>, res: Response) => {
     if (!deleteUser) return res.status(404).json({ error: "User not found" });
 
     res.json(deleteUser);
-  } catch (error: any) {
-    res.status(500).json({ message: `Error deleting user ${error.message}` });
+  } catch (error) {
+    const { status, error: errorResponse } = errorHandler(error);
+    res.status(status).json({ message: errorResponse });
+    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 

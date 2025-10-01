@@ -1,12 +1,5 @@
+import { createRoll, deleteRoll, deleteRolls, getRolls } from "controllers/rollController.js";
 import { Router } from "express";
-import {
-  createRoll,
-  deleteRoll,
-  deleteRolls,
-  // getRoll,
-  getRolls,
-  // updateRoll,
-} from "../controllers/rollController.js";
 
 const rollRouter = Router();
 

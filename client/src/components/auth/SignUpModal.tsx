@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form";
 import { SignUpSchema, type SignUpForm } from "schemas/SignUpSchema";
 import type { UserWithoutId } from "types/User";
 import { useRef } from "react";
-import type { ModalHandle } from "types/Modal";
+import type { ModalHandler } from "types/Modal";
 
 function SignUpModal() {
   const { loading = false, createUser } = useUserStore();
-  const modalRef = useRef<ModalHandle>(null);
+  const modalRef = useRef<ModalHandler>(null);
 
   const {
     register,
@@ -34,9 +34,18 @@ function SignUpModal() {
 
   return (
     <>
+      <button
+        className="min-w-max"
+        onClick={() => {
+          modalRef.current?.openModal();
+        }}
+      >
+        <UserPlus size={16} />
+        Sign Up
+      </button>
+
       <FormModal
         id="signup-modal"
-        Icon={UserPlus}
         title="Sign Up"
         message="Please enter your details"
         ref={modalRef}

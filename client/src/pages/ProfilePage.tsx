@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
-import useUserStore from "@stores/useUserStore";
+// import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import {
 } from "schemas/ProfileEditSchema";
 
 function ProfilePage() {
-  const { loading } = useUserStore();
+  // const { loading } = useUserStore();
   const [togglePassword, setTogglePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 

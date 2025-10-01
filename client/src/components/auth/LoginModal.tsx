@@ -5,7 +5,7 @@ import { Eye, EyeOff, Key, LogIn, Mail } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginSchema, type LoginForm } from "schemas/LoginSchema";
-import type { ModalHandle } from "types/Modal";
+import type { ModalHandler } from "types/Modal";
 import type { UserLogin } from "types/User";
 
 type Props = {};
@@ -13,7 +13,7 @@ type Props = {};
 function LoginModal({}: Props) {
   const { loading } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
-  const modalRef = useRef<ModalHandle>(null);
+  const modalRef = useRef<ModalHandler>(null);
 
   const {
     register,
@@ -37,9 +37,18 @@ function LoginModal({}: Props) {
 
   return (
     <>
+      <button
+        className="min-w-max"
+        onClick={() => {
+          modalRef.current?.openModal();
+        }}
+      >
+        <LogIn size={16} />
+        Log In
+      </button>
+
       <FormModal
         id="login-modal"
-        Icon={LogIn}
         title="Log In"
         message="Please enter your credentials"
         ref={modalRef}

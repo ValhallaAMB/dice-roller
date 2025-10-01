@@ -1,83 +1,67 @@
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 import useThemeStore from "@stores/useThemeStore";
+import { forwardRef } from "react";
+import useDisplayModal from "hooks/useDisplayModal";
+import type { ModalHandler } from "types/Modal";
 
 type Props = {
   id: string;
-  name: string;
   title: string;
   message: string;
   twBtnStyle: string;
   func?: () => void;
 };
 
-export default function NotificationModal({
-  id,
-  name,
-  title,
-  message,
-  twBtnStyle,
-  func,
-}: Props) {
-  const { theme } = useThemeStore();
+const NotificationModal = forwardRef<ModalHandler, Props>(
+  ({ id, title, message, twBtnStyle, func }, ref) => {
+    const { theme } = useThemeStore();
+    const modalRef = useDisplayModal(ref);
 
-  const openDialog = () => {
-    const dialog = document.getElementById(id) as HTMLDialogElement;
-    dialog.hidden = false;
-    dialog.showModal();
-  };
+    const onConfirm = () => {
+      func && func();
+      modalRef.current!.hidden = true;
+      modalRef.current!.close();
+    };
 
-  const closeDialog = () => {
-    const dialog = document.getElementById(id) as HTMLDialogElement;
-    dialog.hidden = true;
-    dialog.close();
-  };
+    return createPortal(
+      <dialog
+        id={id}
+        className="modal modal-bottom sm:modal-middle"
+        data-theme={theme}
+        ref={modalRef}
+      >
+        <div className="modal-box bg-base-200 text-base-content shadow">
+          <h3 className="text-lg font-bold">{title}</h3>
+          <p className="py-4">{message}</p>
+          <div className="modal-action">
+            {/* Close the modal manually */}
+            <form method="dialog" className="space-x-2">
+              <button
+                type="button"
+                className={twMerge("btn", twBtnStyle)}
+                onClick={onConfirm}
+              >
+                Confirm
+              </button>
 
-  const onConfirm = () => {
-    func && func();
-    closeDialog();
-  };
-
-  return (
-    <>
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button className="btn btn-error btn-sm" onClick={openDialog}>
-        {title}
-      </button>
-
-      {createPortal(
-        <dialog
-          id={id}
-          className="modal modal-bottom sm:modal-middle"
-          data-theme={theme}
-        >
-          <div className="modal-box bg-base-200 text-base-content shadow">
-            <h3 className="text-lg font-bold">{name}</h3>
-            <p className="py-4">{message}</p>
-            <div className="modal-action">
-              {/* Close the modal manually */}
-              <form method="dialog" className="space-x-2">
-                <button
-                  type="button"
-                  className={twMerge("btn", twBtnStyle)}
-                  onClick={onConfirm}
-                >
-                  Confirm
-                </button>
-
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={closeDialog}
-                >
-                  Close
-                </button>
-              </form>
-            </div>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => {
+                  modalRef.current!.hidden = true;
+                  modalRef.current!.close();
+                }}
+              >
+                Close
+              </button>
+            </form>
           </div>
-        </dialog>,
-        document.body,
-      )}
-    </>
-  );
-}
+        </div>
+      </dialog>,
+      document.body,
+    );
+  },
+);
+
+export default NotificationModal;

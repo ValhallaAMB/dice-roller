@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { userWithoutId, User } from "../types/User";
+import type { UserWithoutId, User } from "../types/User";
 import toast from "react-hot-toast";
 
 type UserState = {
@@ -8,7 +8,7 @@ type UserState = {
   loading: boolean;
   error: string | null;
   fetchUser: () => Promise<void>;
-  createUser: (user: userWithoutId) => Promise<void>;
+  createUser: (user: UserWithoutId) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
 };
 
@@ -35,7 +35,7 @@ const useUserStore = create<UserState>((set) => ({
     }
   },
 
-  createUser: async (user: userWithoutId) => {
+  createUser: async (user: UserWithoutId) => {
     set({ loading: true });
 
     try {

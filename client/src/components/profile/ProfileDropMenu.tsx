@@ -1,11 +1,15 @@
 import { LogOut, User, UserPen } from "lucide-react";
 import { Link } from "react-router-dom";
-import SignUpModal from "@components/auth/SignUpModal";
-import LoginModal from "@components/auth/LoginModal";
+// import SignUpModal from "@components/auth/SignUpModal";
+// import LoginModal from "@components/auth/LoginModal";
+import { lazy, Suspense } from "react";
+
+const LoginModal = lazy(() => import("@components/auth/LoginModal"));
+const SignUpModal = lazy(() => import("@components/auth/SignUpModal"));
 
 function ProfileDropMenu() {
   // const [loggedIn, setLoggedIn] = useState(false);
-  const loggedIn = true;
+  const loggedIn = false;
 
   return (
     <div className="dropdown dropdown-end">
@@ -35,10 +39,22 @@ function ProfileDropMenu() {
         ) : (
           <>
             <li>
-              <LoginModal />
+              <Suspense
+                fallback={
+                  <div className="loading loading-spinner loading-xl" />
+                }
+              >
+                <LoginModal />
+              </Suspense>
             </li>
             <li>
-              <SignUpModal />
+              <Suspense
+                fallback={
+                  <div className="loading loading-spinner loading-xl" />
+                }
+              >
+                <SignUpModal />
+              </Suspense>
             </li>
           </>
         )}

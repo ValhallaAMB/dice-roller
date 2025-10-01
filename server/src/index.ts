@@ -1,15 +1,13 @@
 import express from "express";
-import indexRouter from "./routes/index.js";
-import userRouter from "./routes/users.js";
-import {
-  corsMiddleware,
-  helmetMiddleware,
-  morganMiddleware,
-} from "./middlewares/3rdPartyMiddleware.js";
+import indexRouter from "routes/index.js";
+import userRouter from "routes/users.js";
 import dotenv from "dotenv";
-import rollRouter from "./routes/rolls.js";
-import aj from "./middlewares/arcjet.js";
+import rollRouter from "routes/rolls.js";
+import aj from "middlewares/arcjet.js";
 import type { ArcjetNodeRequest } from "@arcjet/node";
+import morgan from "morgan";
+import helmet from "helmet";
+import cors from "cors";
 
 // Load environment variables from .env file
 dotenv.config({
@@ -26,9 +24,9 @@ const port = Number(process.env.PORT) || 3000;
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
-app.use(helmetMiddleware); // Security headers
-app.use(morganMiddleware); // HTTP request logging
-app.use(corsMiddleware); // Enable CORS
+app.use(helmet()); // Security headers
+app.use(morgan("dev")); // HTTP request logging
+app.use(cors()); // Enable CORS
 
 // Arcjet middleware
 app.use(async (req, res, next) => {

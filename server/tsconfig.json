@@ -39,6 +39,16 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+
+    /* Import paths */
+    "baseUrl": "./src",
+    "paths": {
+      "controllers/*": ["controllers/*"],
+      "middlewares/*": ["middlewares/*"],
+      "routes/*": ["routes/*"],
+      "generated/*": ["generated/*"]
+    }
+  },
+  "include": ["src"]
 }

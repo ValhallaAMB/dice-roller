@@ -4,13 +4,13 @@
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "module": "ESNext", // Originally "ESNext"
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "moduleResolution": "bundler", // Originally "bundler"
+    "allowImportingTsExtensions": true, // Originally true
+    "verbatimModuleSyntax": true, // Originally true
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
@@ -32,6 +32,7 @@
       "@stores/*": ["stores/*"],
       "types/*": ["types/*"],
       "schemas/*": ["schemas/*"],
+      "hooks/*": ["hooks/*"],
     },
   },
   "include": ["src"]

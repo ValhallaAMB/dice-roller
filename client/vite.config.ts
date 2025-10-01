@@ -13,6 +13,7 @@ export default defineConfig({
       "@stores": "/src/stores",
       "types": "/src/types",
       "schemas": "/src/schemas",
+      "hooks": "/src/hooks",
     },
   },
 });
