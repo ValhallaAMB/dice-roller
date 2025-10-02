@@ -32,3 +32,6 @@ dist-ssr
 
 // Prisma
 src/generated/prisma
+
+// Key pair files
+*.pem
