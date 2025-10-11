@@ -1,13 +1,9 @@
 export type User = {
   id: number;
-  username: string;
+  cognitoSub: string;
   email: string;
+  username: string;
   pfpBase64: string | null;
 };
 
-export type UserWithoutId = Omit<User, "id">;
-
-export type UserLogin = {
-  email: string;
-  password: string;
-};
+// export type UserWithoutId = Omit<User, "id">;

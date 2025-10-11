@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
+import useAuthStore from "@stores/useAuthStore";
 // import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
@@ -8,8 +9,8 @@ import {
   type ProfileEditForm,
 } from "schemas/ProfileEditSchema";
 
-function ProfilePage() {
-  // const { loading } = useUserStore();
+function AccountPage() {
+  const {user} = useAuthStore();
   const [togglePassword, setTogglePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,6 +21,10 @@ function ProfilePage() {
     reset,
   } = useForm<ProfileEditForm>({
     resolver: zodResolver(ProfileEditSchema),
+    defaultValues: {
+      username: user?.username,
+      email: user?.email,
+    }
   });
 
   const submitHandler = async (data: ProfileEditForm) => {
@@ -30,7 +35,7 @@ function ProfilePage() {
       password: data.password,
       confirmPassword: data.confirmPassword,
     };
-    // await login(user);
+    
     console.log(user);
     reset({
       pfp: "",
@@ -42,7 +47,7 @@ function ProfilePage() {
   return (
     <main className="mt-7 grid place-items-center">
       <fieldset className="fieldset bg-base-100 border-base-content/10 rounded-box w-xs space-y-1 border p-4">
-        <legend className="fieldset-legend text-xl">{"Name"}'s Profile</legend>
+        <legend className="fieldset-legend text-xl">{user?.username}'s Profile</legend>
 
         <div className="avatar mb-2 justify-center">
           <div className="w-32 rounded-full">
@@ -145,4 +150,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default AccountPage;

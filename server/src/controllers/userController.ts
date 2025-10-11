@@ -4,30 +4,19 @@ import type {
   Response,
 } from "express-serve-static-core";
 import { PrismaClient, type User } from "generated/prisma/client.js";
-import errorHandler  from "utils/errorHandler.js";
+import errorHandler from "utils/errorHandler.js";
 
 // Global Prisma client instance
 const prisma = new PrismaClient();
 
-// Get all users (For testing purposes)
-// const getUsers = async (req: Request, res: Response) => {
-//   try {
-//     const users = await prisma.user.findMany();
-//     res.json(users);
-//   } catch (error) {
-// const { status, error: errorResponse } = errorHandler(error);
-// res.status(status).json({ message: errorResponse });
-// res.status(500).json({ message: errorHandler(error) });
-//   }
-// };
-
-// Get user (/users/:id)
-const getUser = async (req: Request<{ id: number }>, res: Response) => {
+const getCurrentUser = async (
+  req: Request<ParamsDictionary, any, { cognitoSub: string }>,
+  res: Response
+) => {
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        id: Number(req.params.id),
-      },
+    const { cognitoSub } = req.body;
+    const user = await prisma.user.findUnique({
+      where: { cognitoSub: String(cognitoSub) },
     });
 
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -36,21 +25,20 @@ const getUser = async (req: Request<{ id: number }>, res: Response) => {
   } catch (error) {
     const { status, error: errorResponse } = errorHandler(error);
     res.status(status).json({ message: errorResponse });
-    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 
-// Create user (/users)
-const createUser = async (
+// Sign up user (/users/registerUser)
+const registerUser = async (
   req: Request<ParamsDictionary, any, User>,
   res: Response
 ) => {
   try {
-    const { username, email, pfpBase64 } = req.body;
+    const { username, cognitoSub, pfpBase64 } = req.body;
     const newUser = await prisma.user.create({
       data: {
         username,
-        email,
+        cognitoSub,
         pfpBase64,
       },
     });
@@ -58,7 +46,6 @@ const createUser = async (
   } catch (error) {
     const { status, error: errorResponse } = errorHandler(error);
     res.status(status).json({ message: errorResponse });
-    // res.status(500).json({ message: errorHandler(error) });
   }
 };
 
@@ -68,10 +55,10 @@ const updateUser = async (
   res: Response
 ) => {
   try {
-    const { username, email, pfpBase64 } = req.body;
+    const { username, cognitoSub, pfpBase64 } = req.body;
     const updateUser = await prisma.user.update({
       where: { id: Number(req.params.id) },
-      data: { username, email, pfpBase64 },
+      data: { username, cognitoSub, pfpBase64 },
     });
 
     res.json(updateUser);
@@ -101,4 +88,4 @@ const deleteUser = async (req: Request<{ id: number }>, res: Response) => {
   }
 };
 
-export { getUser, createUser, updateUser, deleteUser };
+export { getCurrentUser, registerUser, updateUser, deleteUser };

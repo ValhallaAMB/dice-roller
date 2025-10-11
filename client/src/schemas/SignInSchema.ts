@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LoginSchema = z.object({
+export const SignInSchema = z.object({
   email: z.email("Valid email address is required").max(255),
   password: z
     .string()
@@ -19,4 +19,4 @@ export const LoginSchema = z.object({
     }),
 });
 
-export type LoginForm = z.infer<typeof LoginSchema>;
+export type SignInForm = z.infer<typeof SignInSchema>;

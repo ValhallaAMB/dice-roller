@@ -1,7 +1,7 @@
 import {
-  createUser,
+  getCurrentUser,
+  registerUser,
   deleteUser,
-  getUser,
   updateUser,
 } from "controllers/userController.js";
 import { Router } from "express";
@@ -11,11 +11,11 @@ const userRouter = Router();
 // Get all users (For testing purposes)
 // userRouter.get("/", getUsers);
 
-// Get user (/users/:id)
-userRouter.get("/:id", getUser);
+// Get current user (/users/getCurrentUser)
+userRouter.post("/getCurrentUser", getCurrentUser);
 
-// Create user (/users)
-userRouter.post("/", createUser);
+// Register user (/users/registerUser)
+userRouter.post("/registerUser", registerUser);
 
 // Update user (/users/:id)
 userRouter.patch("/:id", updateUser);

@@ -1,31 +1,30 @@
 import { useState } from "react";
 import useRollStore from "@stores/useRollStore";
+import useAuthStore from "@stores/useAuthStore";
 
 function HomePage() {
-  // const { users, loading, error, fetchUsers } = useUserStore();
   const { createRoll } = useRollStore();
+  const { user } = useAuthStore();
   const [result, setResult] = useState(0);
   const [sides, setSides] = useState(-1);
 
   const rollDice = async (dice: number): Promise<void> => {
     const result = Math.floor(Math.random() * dice) + 1;
     setResult(result);
-    await createRoll(1, "D" + sides, result);
+    if (user) await createRoll(user?.id, "D" + sides, result);
   };
 
-  // console.log(users, loading, error);
-
   return (
-    <main className="grid place-items-center">
+    <main className="grid min-h-[80dvh] place-content-center">
       {/* Main dice roller */}
-      <div className="my-4 grid place-items-center space-y-4">
+      <div className="flex flex-col items-center gap-y-2">
         {sides === -1 ? (
-          <label className="text-3xl">Select a dice to roll</label>
+          <label className="mb-5 text-3xl">Select a dice to roll</label>
         ) : (
           <></>
         )}
         <div
-          className="radial-progress size-32 text-3xl"
+          className="radial-progress mb-5 size-32 text-3xl"
           style={{ ["--value"]: (result / sides) * 100 } as React.CSSProperties}
           aria-valuenow={result}
           role="progressbar"

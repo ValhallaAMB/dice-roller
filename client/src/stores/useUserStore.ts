@@ -1,21 +1,21 @@
 import axios from "axios";
 import { create } from "zustand";
-import type { UserWithoutId, User } from "../types/User";
+import type { User } from "../types/User";
 import toast from "react-hot-toast";
 
 type UserState = {
-  user: User;
+  user: User | {};
   loading: boolean;
   error: string | null;
   fetchUser: () => Promise<void>;
-  createUser: (user: UserWithoutId) => Promise<void>;
+  // createUser: (user: UserWithoutId) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
 const useUserStore = create<UserState>((set) => ({
-  user: {} as User,
+  user: {},
   loading: false,
   error: null,
 
@@ -30,22 +30,6 @@ const useUserStore = create<UserState>((set) => ({
       if (error.status == 429)
         set({ error: "Too many requests - try again later", user: {} as User });
       else set({ error: "Failed to fetch users", user: {} as User });
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  createUser: async (user: UserWithoutId) => {
-    set({ loading: true });
-
-    try {
-      const res = await axios.post(`${baseURL}/users`, user);
-      const newUser: User = await res.data;
-      toast.success("User created successfully");
-      set({ user: newUser, error: null });
-    } catch (error) {
-      toast.error("Failed to create user");
-      set({ error: "Failed to create user" });
     } finally {
       set({ loading: false });
     }

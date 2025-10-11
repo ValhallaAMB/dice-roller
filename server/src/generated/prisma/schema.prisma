@@ -10,11 +10,11 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  pfpBase64 String?
-  email     String  @unique @db.VarChar(255)
-  username  String  @db.VarChar(255)
-  roll      Roll[]
+  id         Int     @id @default(autoincrement())
+  cognitoSub String  @unique @db.VarChar(255)
+  username   String  @unique @db.VarChar(255)
+  pfpBase64  String?
+  roll       Roll[]
 }
 
 model Roll {

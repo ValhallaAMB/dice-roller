@@ -1,15 +1,9 @@
-import { LogOut, User, UserPen } from "lucide-react";
+import { LogOut, User, UserPen, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
-// import SignUpModal from "@components/auth/SignUpModal";
-// import LoginModal from "@components/auth/LoginModal";
-import { lazy, Suspense } from "react";
-
-const LoginModal = lazy(() => import("@components/auth/LoginModal"));
-const SignUpModal = lazy(() => import("@components/auth/SignUpModal"));
+import useAuthStore from "@stores/useAuthStore";
 
 function ProfileDropMenu() {
-  // const [loggedIn, setLoggedIn] = useState(false);
-  const loggedIn = false;
+  const { isAuthenticated, signOut } = useAuthStore();
 
   return (
     <div className="dropdown dropdown-end">
@@ -21,40 +15,31 @@ function ProfileDropMenu() {
         tabIndex={0}
         className="menu dropdown-content bg-base-100 rounded-box z-1 mt-1 shadow-sm"
       >
-        {loggedIn ? (
+        {isAuthenticated ? (
           <>
             <li>
               {/* Must put an ID for now */}
-              <Link to="/profile/1">
-                <UserPen size={16} /> Profile
+              <Link to="/account" className="min-w-max">
+                <UserPen size={16} /> My account
               </Link>
             </li>
             <li>
-              {/* <Link to="/logout">Logout</Link> */}
-              <span>
+              <Link to="/" onClick={signOut} className="min-w-max">
                 <LogOut size={16} /> Logout
-              </span>
+              </Link>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Suspense
-                fallback={
-                  <div className="loading loading-spinner loading-xl" />
-                }
-              >
-                <LoginModal />
-              </Suspense>
+              <Link to="/signin" className="min-w-max">
+                <UserPen size={16} /> Sign In
+              </Link>
             </li>
             <li>
-              <Suspense
-                fallback={
-                  <div className="loading loading-spinner loading-xl" />
-                }
-              >
-                <SignUpModal />
-              </Suspense>
+              <Link to="/signup" className="min-w-max">
+                <UserPlus size={16} /> Sign Up
+              </Link>
             </li>
           </>
         )}
