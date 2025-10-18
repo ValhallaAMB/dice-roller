@@ -1,9 +1,14 @@
 import { LogOut, User, UserPen, UserPlus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "@stores/useAuthStore";
 
 function ProfileDropMenu() {
-  const { isAuthenticated, signOut } = useAuthStore();
+  const { isAuthenticated, logOut } = useAuthStore();
+  const navigate = useNavigate();
+  const logOutHandler = async () => {
+    const success = await logOut();
+    if (success) navigate("/");
+  };
 
   return (
     <div className="dropdown dropdown-end">
@@ -24,7 +29,7 @@ function ProfileDropMenu() {
               </Link>
             </li>
             <li>
-              <Link to="/" onClick={signOut} className="min-w-max">
+              <Link to="/" onClick={logOutHandler} className="min-w-max">
                 <LogOut size={16} /> Logout
               </Link>
             </li>

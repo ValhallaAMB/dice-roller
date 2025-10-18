@@ -4,28 +4,25 @@ import useAuthStore from "@stores/useAuthStore";
 import { Eye, EyeOff, Key, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignInSchema, type SignInForm } from "schemas/SignInSchema";
 
 function SignInPage() {
-  const { loading, error, signIn } = useAuthStore();
-  const navigate = useNavigate();
+  const { loading, error, logIn } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<SignInForm>({
     resolver: zodResolver(SignInSchema),
   });
 
   const submitHandler = async (data: SignInForm) => {
-    await signIn(data);
-    if (!error) return;
-    reset();
-    navigate("/");
+    const success = await logIn(data);
+    if (success) navigate("/");
   };
 
   return (
@@ -68,7 +65,9 @@ function SignInPage() {
 
         <p className="text-center">
           Don't have an account?{" "}
-          <span className="cursor-pointer text-blue-400">Sign Up</span>
+          <Link className="text-blue-400" to="/signup">
+            Sign Up
+          </Link>
         </p>
 
         <button

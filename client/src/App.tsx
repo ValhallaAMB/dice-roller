@@ -2,26 +2,21 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./layout/NavBar";
 import useThemeStore from "./stores/useThemeStore";
 import { Toaster } from "react-hot-toast";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import SignInPage from "@pages/SignInPage";
 import SignUpPage from "@pages/SignUpPage";
 import ConfirmSignUpPage from "@pages/ConfirmSignUpPage";
-import useAuthStore from "@stores/useAuthStore";
+import useResetError from "hooks/useResetError";
+import useAuthSession from "hooks/useAuthSession";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
 
 function App() {
   const { theme } = useThemeStore();
-  const { getUserSession, user } = useAuthStore();
 
-  useEffect(() => {
-    const fetchUserSession = async () => {
-      await getUserSession();
-    };
-
-    fetchUserSession();
-  }, [user]);
+  useResetError();
+  useAuthSession();
 
   return (
     <div

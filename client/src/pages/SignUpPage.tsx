@@ -5,27 +5,24 @@ import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SignUpSchema, type SignUpForm } from "schemas/SignUpSchema";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUpPage() {
-  const { loading, error, signUp } = useAuthStore();
-  const navigate = useNavigate();
+  const { loading, error, registerUser } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<SignUpForm>({
     resolver: zodResolver(SignUpSchema),
   });
 
   const submitHandler = async (data: SignUpForm) => {
-    await signUp(data);
-    if (!error) return;
-    reset();
-    navigate("/confirm-signup");
+    const success = await registerUser(data);
+    if (success) navigate("/confirm-signup");
   };
 
   return (
@@ -82,7 +79,9 @@ function SignUpPage() {
 
         <p className="text-center">
           Already have an account?{" "}
-          <span className="cursor-pointer text-blue-400">Sign In</span>
+          <Link className="text-blue-400" to="/signin">
+            Sign In
+          </Link>
         </p>
 
         <button

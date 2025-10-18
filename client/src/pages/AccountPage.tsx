@@ -47,7 +47,7 @@ function AccountPage() {
   return (
     <main className="mt-7 grid place-items-center">
       <fieldset className="fieldset bg-base-100 border-base-content/10 rounded-box w-xs space-y-1 border p-4">
-        <legend className="fieldset-legend text-xl">{user?.username}'s Profile</legend>
+        <legend className="fieldset-legend text-xl">{user?.username}'s account</legend>
 
         <div className="avatar mb-2 justify-center">
           <div className="w-32 rounded-full">

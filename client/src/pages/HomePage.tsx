@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useRollStore from "@stores/useRollStore";
 import useAuthStore from "@stores/useAuthStore";
+import CountUp from "@components/common/CountUp";
 
 function HomePage() {
   const { createRoll } = useRollStore();
@@ -11,7 +12,7 @@ function HomePage() {
   const rollDice = async (dice: number): Promise<void> => {
     const result = Math.floor(Math.random() * dice) + 1;
     setResult(result);
-    if (user) await createRoll(user?.id, "D" + sides, result);
+    if (user?.id) await createRoll(user.id, "D" + sides, result);
   };
 
   return (
@@ -23,14 +24,22 @@ function HomePage() {
         ) : (
           <></>
         )}
-        <div
+        {/* <div
           className="radial-progress mb-5 size-32 text-3xl"
           style={{ ["--value"]: (result / sides) * 100 } as React.CSSProperties}
           aria-valuenow={result}
           role="progressbar"
         >
           {result}
-        </div>
+        </div> */}
+        <CountUp
+          from={0}
+          to={result}
+          separator=","
+          direction="up"
+          duration={1}
+          className="count-up-text mb-5 text-8xl"
+        />
       </div>
 
       <div className="join gap-1.5 [&>*]:rounded-md">

@@ -7,7 +7,7 @@ import {
   getCurrentUser,
 } from "@aws-amplify/auth";
 import axios from "axios";
-import { toast } from "react-hot-toast/headless";
+import toast from "react-hot-toast";
 import type { SignUpForm } from "schemas/SignUpSchema";
 import type { SignInForm } from "schemas/SignInSchema";
 import type { User } from "types/User";
@@ -19,10 +19,11 @@ type AuthState = {
   error: string | null;
 
   getUserSession: () => Promise<void>;
-  signUp: (user: SignUpForm) => Promise<void>;
-  confirmSignUp: (email: string, code: string) => Promise<void>;
-  signIn: (user: SignInForm) => Promise<void>;
-  signOut: () => Promise<void>;
+  registerUser: (user: SignUpForm) => Promise<Boolean>;
+  confirmRegister: (email: string, code: string) => Promise<Boolean>;
+  logIn: (user: SignInForm) => Promise<Boolean>;
+  logOut: () => Promise<Boolean>;
+  resetError: () => void;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
@@ -47,7 +48,10 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       set({
-        user: { ...res.data, email: session.signInDetails?.loginId },
+        user: {
+          ...res.data,
+          email: session.signInDetails?.loginId,
+        },
         isAuthenticated: !!session,
         error: null,
       });
@@ -64,22 +68,22 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  signUp: async (user: SignUpForm) => {
+  registerUser: async (newUser: SignUpForm) => {
     set({ loading: true });
     try {
       const { userId } = await signUp({
-        username: user.email,
-        password: user.password,
+        username: newUser.email,
+        password: newUser.password,
         options: {
           userAttributes: {
-            email: user.email,
+            email: newUser.email,
           },
         },
       });
 
-      const newUser = await axios.post(`${baseURL}/users/registerUser`, {
+      await axios.post(`${baseURL}/users/registerUser`, {
         cognitoSub: userId,
-        username: user.username,
+        username: newUser.username,
         pfpBase64: null,
       });
 
@@ -89,42 +93,52 @@ const useAuthStore = create<AuthState>((set) => ({
 
       set({
         error: null,
+        isAuthenticated: false,
         user: {
-          ...newUser.data,
-          email: user.email,
+          email: newUser.email,
+          username: newUser.username,
+          pfpBase64: null,
         },
       });
+
+      return true;
     } catch (error: any) {
       set({ error: "failed to sign up" });
+      return false;
     } finally {
       set({ loading: false });
     }
   },
 
-  confirmSignUp: async (email: string, code: string) => {
+  confirmRegister: async (email: string, code: string) => {
     set({ loading: true });
     try {
       await confirmSignUp({ username: email, confirmationCode: code });
 
       toast.success("Confirmation successful!");
-      const session = await getCurrentUser();
       set({
-        isAuthenticated: !!session,
+        isAuthenticated: false,
         error: null,
+        user: {
+          email: email,
+        },
       });
+
+      return true;
     } catch (error) {
       set({ error: "Failed to confirm sign up" });
+      return false;
     } finally {
       set({ loading: false });
     }
   },
 
-  signIn: async (user: SignInForm) => {
+  logIn: async (newUser: SignInForm) => {
     set({ loading: true });
     try {
       await signIn({
-        username: user.email,
-        password: user.password,
+        username: newUser.email,
+        password: newUser.password,
       });
 
       const session = await getCurrentUser();
@@ -134,11 +148,12 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       set({
-        user: { ...res.data, email: user.email },
+        user: { ...res.data, email: newUser.email },
         isAuthenticated: !!session,
         error: null,
       });
 
+      return true;
     } catch (error: any) {
       switch (error.name) {
         case "NotAuthorizedException":
@@ -150,12 +165,14 @@ const useAuthStore = create<AuthState>((set) => ({
         default:
           set({ error: "Failed to sign in" });
       }
+
+      return false;
     } finally {
       set({ loading: false });
     }
   },
 
-  signOut: async () => {
+  logOut: async () => {
     set({ loading: true });
     try {
       await signOut();
@@ -165,12 +182,18 @@ const useAuthStore = create<AuthState>((set) => ({
         loading: false,
         error: null,
       });
+
+      return true;
     } catch (error) {
       set({ error: "Failed to sign out" });
+
+      return false;
     } finally {
       set({ loading: false });
     }
   },
+
+  resetError: () => set({ error: null }),
 }));
 
 export default useAuthStore;

@@ -10,26 +10,23 @@ import {
 } from "schemas/ConfirmSignUpSchema";
 
 function ConfirmSignUpPage() {
-  const { loading, error, user, confirmSignUp } = useAuthStore();
+  const { loading, error, user, confirmRegister } = useAuthStore();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<ConfirmSignUpForm>({
     resolver: zodResolver(ConfirmSignUpSchema),
     defaultValues: {
-      email: user?.email,
+      email: user?.email || "",
     },
   });
 
   const submitHandler = async (data: ConfirmSignUpForm) => {
-    await confirmSignUp(data.email, data.code.toString());
-    if (!error) return;
-    reset();
-    navigate("/");
+    const success = await confirmRegister(data.email, data.code);
+    if (success) navigate("/signin");
   };
 
   return (
