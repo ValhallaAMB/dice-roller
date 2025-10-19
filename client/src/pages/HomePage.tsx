@@ -2,6 +2,7 @@ import { useState } from "react";
 import useRollStore from "@stores/useRollStore";
 import useAuthStore from "@stores/useAuthStore";
 import CountUp from "@components/common/CountUp";
+import BlurText from "@components/common/BlurText";
 
 function HomePage() {
   const { createRoll } = useRollStore();
@@ -20,7 +21,14 @@ function HomePage() {
       {/* Main dice roller */}
       <div className="flex flex-col items-center gap-y-2">
         {sides === -1 ? (
-          <label className="mb-5 text-3xl">Select a dice to roll</label>
+          // <label className="mb-5 text-3xl">Select a dice to roll</label>
+          <BlurText
+            text="Select a dice to roll"
+            delay={50}
+            animateBy="letters"
+            direction="top"
+            className="text-3xl"
+          />
         ) : (
           <></>
         )}
@@ -42,7 +50,7 @@ function HomePage() {
         />
       </div>
 
-      <div className="join gap-1.5 [&>*]:rounded-md">
+      <div className="join [&>*]:btn-outline gap-1.5 [&>*]:rounded-md">
         <input
           className="join-item btn"
           type="radio"
