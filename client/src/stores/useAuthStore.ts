@@ -103,7 +103,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
       return true;
     } catch (error: any) {
-      set({ error: "failed to sign up" });
+      set({ error: error.message || "Failed to sign up" });
       return false;
     } finally {
       set({ loading: false });
@@ -125,8 +125,8 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       return true;
-    } catch (error) {
-      set({ error: "Failed to confirm sign up" });
+    } catch (error: any) {
+      set({ error: error.message || "Failed to confirm sign up" });
       return false;
     } finally {
       set({ loading: false });
@@ -155,16 +155,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
       return true;
     } catch (error: any) {
-      switch (error.name) {
-        case "NotAuthorizedException":
-          set({ error: "Incorrect username or password" });
-          break;
-        case "UserNotFoundException":
-          set({ error: "User does not exist" });
-          break;
-        default:
-          set({ error: "Failed to sign in" });
-      }
+      set({ error: error.message || "Failed to sign in" });
 
       return false;
     } finally {
@@ -184,8 +175,8 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       return true;
-    } catch (error) {
-      set({ error: "Failed to sign out" });
+    } catch (error: any) {
+      set({ error: error.message || "Failed to sign out" });
 
       return false;
     } finally {

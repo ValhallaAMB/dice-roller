@@ -2,21 +2,7 @@ import { z } from "zod";
 
 export const SignInSchema = z.object({
   email: z.email("Valid email address is required").max(255),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .refine((password) => /[A-Z]/.test(password), {
-      message: "Password must contain at least one uppercase letter",
-    })
-    .refine((password) => /[a-z]/.test(password), {
-      message: "Password must contain at least one lowercase letter",
-    })
-    .refine((password) => /[0-9]/.test(password), {
-      message: "Password must contain at least one number",
-    })
-    .refine((password) => /[!@#$%^&*]/.test(password), {
-      message: "Password must contain at least one special character",
-    }),
+  password: z.string(),
 });
 
 export type SignInForm = z.infer<typeof SignInSchema>;
