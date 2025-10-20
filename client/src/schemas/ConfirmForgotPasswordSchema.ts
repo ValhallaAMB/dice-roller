@@ -1,8 +1,12 @@
 import z from "zod";
 
-export const ChangePasswordSchema = z
+export const ConfirmForgotPasswordSchema = z
   .object({
-    oldPassword: z.string(),
+    email: z.email("Invalid email address").max(255, "Email is too long"),
+    code: z
+      .string()
+      .regex(/^[0-9]+$/, "Code must contain only numbers")
+      .length(6, "Code must be 6 digits long"),
     newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters long")
@@ -27,4 +31,6 @@ export const ChangePasswordSchema = z
     path: ["confirmNewPassword"],
   });
 
-export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;
+export type ConfirmForgotPasswordForm = z.infer<
+  typeof ConfirmForgotPasswordSchema
+>;

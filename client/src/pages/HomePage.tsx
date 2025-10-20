@@ -1,12 +1,12 @@
 import { useState } from "react";
 import useRollStore from "@stores/useRollStore";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import CountUp from "@components/common/CountUp";
 import BlurText from "@components/common/BlurText";
 
 function HomePage() {
   const { createRoll } = useRollStore();
-  const { user } = useAuthStore();
+  const { user } = useUserStore();
   const [result, setResult] = useState(0);
   const [sides, setSides] = useState(-1);
 

@@ -1,6 +1,6 @@
 import FormLayout from "@components/common/FormLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignInSchema, type SignInForm } from "schemas/SignInSchema";
 
 function SignInPage() {
-  const { loading, error, logIn } = useAuthStore();
+  const { loading, error, logIn } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -62,6 +62,13 @@ function SignInPage() {
         {errors.password && (
           <p className="text-error text-xs">{errors.password?.message}</p>
         )}
+
+        <p className="text-center">
+          Forgot your password?{" "}
+          <Link className="text-blue-400" to="/forgot-password">
+            Reset Password
+          </Link>
+        </p>
 
         <p className="text-center">
           Don't have an account?{" "}

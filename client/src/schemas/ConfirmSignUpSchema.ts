@@ -5,7 +5,7 @@ export const ConfirmSignUpSchema = z.object({
   code: z
     .string()
     .regex(/^[0-9]+$/, "Code must contain only numbers")
-    .length(6, "Code must be 6 characters long"),
+    .length(6, "Code must be 6 digits long"),
 });
 
 export type ConfirmSignUpForm = z.infer<typeof ConfirmSignUpSchema>;

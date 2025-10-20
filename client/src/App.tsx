@@ -4,6 +4,8 @@ import SignInPage from "@pages/SignInPage";
 import SignUpPage from "@pages/SignUpPage";
 import ConfirmSignUpPage from "@pages/ConfirmSignUpPage";
 import RootLayout from "@layout/RootLayout";
+import ForgotPassword from "@pages/ForgotPassword";
+import ConfirmForgotPassword from "@pages/ConfirmForgotPassword";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
@@ -24,6 +26,11 @@ function App() {
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/confirm-signup" element={<ConfirmSignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/confirm-forgot-password"
+            element={<ConfirmForgotPassword />}
+          />
         </Route>
       </Routes>
     </Suspense>

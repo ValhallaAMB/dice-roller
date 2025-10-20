@@ -1,6 +1,6 @@
 import FormLayout from "@components/common/FormLayout";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { SignUpSchema, type SignUpForm } from "schemas/SignUpSchema";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignUpPage() {
-  const { loading, error, registerUser } = useAuthStore();
+  const { loading, error, registerUser } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { ImagePlus, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import {
@@ -10,7 +10,7 @@ import {
 type Props = {};
 
 function EditAccount({}: Props) {
-  const { user } = useAuthStore();
+  const { user } = useUserStore();
 
   const {
     register,
@@ -44,7 +44,7 @@ function EditAccount({}: Props) {
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-3xl font-bold">Edit your awesome account</h1>
-            <p className="py-3 text-neutral-content">
+            <p className="text-neutral-content py-3">
               Make changes to your account information below.
             </p>
           </div>

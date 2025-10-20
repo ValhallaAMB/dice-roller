@@ -1,9 +1,9 @@
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function useAuthSession() {
-  const { getUserSession } = useAuthStore();
+  const { getUserSession } = useUserStore();
   const { pathname } = useLocation();
 
   async function fetchUserSession() {

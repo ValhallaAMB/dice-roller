@@ -1,6 +1,6 @@
 import FormLayout from "@components/common/FormLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { Hash, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import {
 } from "schemas/ConfirmSignUpSchema";
 
 function ConfirmSignUpPage() {
-  const { loading, error, user, confirmRegister } = useAuthStore();
+  const { loading, error, user, confirmRegister } = useUserStore();
   const navigate = useNavigate();
 
   const {

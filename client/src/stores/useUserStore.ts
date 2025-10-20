@@ -8,12 +8,14 @@ import {
   resetPassword,
   confirmResetPassword,
   updatePassword,
+
 } from "@aws-amplify/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
 import type { SignUpForm } from "schemas/SignUpSchema";
 import type { SignInForm } from "schemas/SignInSchema";
 import type { User } from "types/User";
+import type { ConfirmForgotPasswordForm } from "schemas/ConfirmForgotPasswordSchema";
 
 type AuthState = {
   user: User | null;
@@ -27,6 +29,7 @@ type AuthState = {
   logIn: (user: SignInForm) => Promise<Boolean>;
   logOut: () => Promise<Boolean>;
   forgotPassword: (email: string) => Promise<Boolean>;
+  confirmForgotPassword: (user: ConfirmForgotPasswordForm) => Promise<Boolean>;
   changePassword: (
     oldPassword: string,
     newPassword: string,
@@ -36,7 +39,7 @@ type AuthState = {
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
-const useAuthStore = create<AuthState>((set) => ({
+const useUserStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   loading: false,
@@ -197,9 +200,34 @@ const useAuthStore = create<AuthState>((set) => ({
       await resetPassword({
         username: email,
       });
+      set({ error: null, user: { email: email } });
+
+      toast.success("Password reset code sent to your email!");
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
+      set({ error: error.message || "Failed to reset password" });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  confirmForgotPassword: async (user: ConfirmForgotPasswordForm) => {
+    set({ loading: true });
+    try {
+      await confirmResetPassword({
+        username: user.email,
+        confirmationCode: user.code,
+        newPassword: user.newPassword,
+      });
+      set({ error: null, user: { email: user.email } });
+
+      toast.success("Password reset successful!");
+
+      return true;
+    } catch (error: any) {
+      set({ error: error.message || "Failed to confirm password reset" });
       return false;
     } finally {
       set({ loading: false });
@@ -235,4 +263,4 @@ const useAuthStore = create<AuthState>((set) => ({
   resetError: () => set({ error: null }),
 }));
 
-export default useAuthStore;
+export default useUserStore;

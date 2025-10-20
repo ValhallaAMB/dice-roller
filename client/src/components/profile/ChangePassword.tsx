@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "@stores/useAuthStore";
+import useUserStore from "@stores/useUserStore";
 import { Eye, EyeOff, Key } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import {
 
 function ChangePassword() {
   const [showPassword, setShowPassword] = useState(false);
-  const { error, changePassword } = useAuthStore();
+  const { loading, error, changePassword } = useUserStore();
 
   const {
     register,
@@ -108,7 +108,7 @@ function ChangePassword() {
                 <input
                   placeholder="Confirm awesome new password"
                   type={showPassword ? "text" : "password"}
-                  {...register("newConfirmPassword")}
+                  {...register("confirmNewPassword")}
                 />
                 <button
                   type="button"
@@ -118,17 +118,22 @@ function ChangePassword() {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {errors.newConfirmPassword && (
+              {errors.confirmNewPassword && (
                 <p className="text-error text-xs">
-                  {errors.newConfirmPassword.message}
+                  {errors.confirmNewPassword.message}
                 </p>
               )}
 
               <button
                 className="btn btn-primary mx-auto mt-2 block max-w-6/12"
                 type="submit"
+                disabled={loading}
               >
-                Change Password
+                {loading ? (
+                  <div className="loading loading-spinner loading-sm" />
+                ) : (
+                  "Change Password"
+                )}
               </button>
             </form>
           </div>
