@@ -27,7 +27,7 @@ function HomePage() {
             delay={50}
             animateBy="letters"
             direction="top"
-            className="text-3xl"
+            className="text-5xl"
           />
         ) : (
           <></>

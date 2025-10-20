@@ -2,7 +2,8 @@ import z from "zod";
 
 export const ChangePasswordSchema = z
   .object({
-    password: z
+    oldPassword: z.string(),
+    newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters long")
       .regex(/[^\s]/, "Password cannot contain spaces")
@@ -19,11 +20,11 @@ export const ChangePasswordSchema = z
         /^(?=.*[!@#$%^&*])/,
         "Password must contain at least one special character",
       ),
-    confirmPassword: z.string(),
+    newConfirmPassword: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
+  .refine((data) => data.newPassword === data.newConfirmPassword, {
+    message: "New passwords don't match",
+    path: ["newConfirmPassword"],
   });
 
 export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;

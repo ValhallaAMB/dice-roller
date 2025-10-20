@@ -5,6 +5,9 @@ import {
   signIn,
   signOut,
   getCurrentUser,
+  resetPassword,
+  confirmResetPassword,
+  updatePassword,
 } from "@aws-amplify/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -23,6 +26,11 @@ type AuthState = {
   confirmRegister: (email: string, code: string) => Promise<Boolean>;
   logIn: (user: SignInForm) => Promise<Boolean>;
   logOut: () => Promise<Boolean>;
+  forgotPassword: (email: string) => Promise<Boolean>;
+  changePassword: (
+    oldPassword: string,
+    newPassword: string,
+  ) => Promise<Boolean>;
   resetError: () => void;
 };
 
@@ -170,7 +178,6 @@ const useAuthStore = create<AuthState>((set) => ({
       set({
         user: null,
         isAuthenticated: false,
-        loading: false,
         error: null,
       });
 
@@ -178,6 +185,47 @@ const useAuthStore = create<AuthState>((set) => ({
     } catch (error: any) {
       set({ error: error.message || "Failed to sign out" });
 
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  forgotPassword: async (email: string) => {
+    set({ loading: true });
+    try {
+      await resetPassword({
+        username: email,
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  changePassword: async (oldPassword: string, newPassword: string) => {
+    set({ loading: true });
+    try {
+      await updatePassword({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      });
+
+      set({ error: null });
+
+      toast.success("Password changed successfully!");
+      return true;
+    } catch (error: any) {
+      switch (error.name) {
+        case "NotAuthorizedException":
+          set({ error: "Incorrect old password" });
+          break;
+        default:
+          set({ error: "Failed to change password" });
+      }
       return false;
     } finally {
       set({ loading: false });
