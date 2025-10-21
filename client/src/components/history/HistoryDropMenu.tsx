@@ -28,17 +28,17 @@ function HistoryDropMenu() {
     };
 
     getRolls();
-  }, []);
+  }, [rolls.length]);
 
   const openSingleDelete = (rollId: number) => {
     setSelectedRollId(rollId);
     setModalMode("single");
-    modalRef.current?.openModal?.();
+    modalRef.current?.openModal();
   };
 
   const openBulkDelete = () => {
     setModalMode("bulk");
-    modalRef.current?.openModal?.();
+    modalRef.current?.openModal();
   };
 
   return (

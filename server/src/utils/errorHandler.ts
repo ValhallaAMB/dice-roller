@@ -40,7 +40,7 @@ export default function errorHandler(
   config: ErrorHandlerConfig = {}
 ): { status: number; error: ErrorResponse } {
   const {
-    isDevelopment = process.env.ARCJET_ENV === "development",
+    isDevelopment = String(process.env.ARCJET_ENV) === "development",
     logError = true,
   } = config;
 

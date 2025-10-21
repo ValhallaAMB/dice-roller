@@ -8,7 +8,7 @@ import {
   resetPassword,
   confirmResetPassword,
   updatePassword,
-
+  deleteUser,
 } from "@aws-amplify/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -34,12 +34,13 @@ type AuthState = {
     oldPassword: string,
     newPassword: string,
   ) => Promise<Boolean>;
+  deleteAccount: () => Promise<Boolean>;
   resetError: () => void;
 };
 
 const baseURL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
-const useUserStore = create<AuthState>((set) => ({
+const useUserStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   loading: false,
@@ -54,9 +55,13 @@ const useUserStore = create<AuthState>((set) => ({
         return;
       }
 
-      const res = await axios.post(`${baseURL}/users/getCurrentUser`, {
-        cognitoSub: session.userId,
-      });
+      console.log("User session:", session);
+
+      const res = await axios.get(
+        `${baseURL}/users/getCurrentUser/${session.userId}`,
+      );
+
+      console.log("Fetched user data:", res.data);
 
       set({
         user: {
@@ -153,10 +158,9 @@ const useUserStore = create<AuthState>((set) => ({
       });
 
       const session = await getCurrentUser();
-
-      const res = await axios.post(`${baseURL}/users/getCurrentUser`, {
-        cognitoSub: session.userId,
-      });
+      const res = await axios.get(
+        `${baseURL}/users/getCurrentUser/${session.userId}`,
+      );
 
       set({
         user: { ...res.data, email: newUser.email },
@@ -254,6 +258,31 @@ const useUserStore = create<AuthState>((set) => ({
         default:
           set({ error: "Failed to change password" });
       }
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  deleteAccount: async () => {
+    set({ loading: true });
+    try {
+      const currentUser = get().user;
+
+      await axios.delete(
+        `${baseURL}/users/deleteAccount/${currentUser?.cognitoSub}`,
+      );
+      await deleteUser();
+
+      set({
+        user: null,
+        isAuthenticated: false,
+        error: null,
+      });
+      toast.success("Account deleted successfully!");
+      return true;
+    } catch (error: any) {
+      set({ error: error.message || "Failed to delete account" });
       return false;
     } finally {
       set({ loading: false });

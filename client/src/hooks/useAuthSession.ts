@@ -12,6 +12,5 @@ export default function useAuthSession() {
 
   useEffect(() => {
     fetchUserSession();
-    // console.log("Checking user session...", user);
-  }, [pathname]);
+  }, [pathname, getUserSession]);
 }

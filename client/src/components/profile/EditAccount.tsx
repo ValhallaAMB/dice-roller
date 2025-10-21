@@ -2,6 +2,7 @@ import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
 import { ImagePlus, Mail, User } from "lucide-react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   ProfileEditSchema,
@@ -20,10 +21,6 @@ function EditAccount({}: Props) {
     reset,
   } = useForm<ProfileEditForm>({
     resolver: zodResolver(ProfileEditSchema),
-    defaultValues: {
-      username: user?.username,
-      email: user?.email,
-    },
   });
 
   const submitHandler = async (data: ProfileEditForm) => {
@@ -34,10 +31,15 @@ function EditAccount({}: Props) {
     };
 
     console.log(userData);
+  };
+
+  useEffect(() => {
     reset({
+      username: user?.username ?? "",
+      email: user?.email ?? "",
       pfp: "",
     });
-  };
+  }, [user]);
 
   return (
     <main>
@@ -81,7 +83,7 @@ function EditAccount({}: Props) {
             register={register}
             error={errors.username?.message}
           />
-          
+
           <TextInput<ProfileEditForm>
             title="Email"
             name="email"

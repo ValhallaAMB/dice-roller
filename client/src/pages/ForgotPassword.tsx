@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import {
   ForgotPasswordSchema,
   type ForgotPasswordForm,

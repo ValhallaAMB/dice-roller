@@ -10,13 +10,13 @@ import errorHandler from "utils/errorHandler.js";
 const prisma = new PrismaClient();
 
 const getCurrentUser = async (
-  req: Request<ParamsDictionary, any, { cognitoSub: string }>,
+  req: Request<{ cognitoSubId: string }>,
   res: Response
 ) => {
   try {
-    const { cognitoSub } = req.body;
+    const { cognitoSubId } = req.params;
     const user = await prisma.user.findUnique({
-      where: { cognitoSub: String(cognitoSub) },
+      where: { cognitoSub: String(cognitoSubId) },
     });
 
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -49,7 +49,7 @@ const registerUser = async (
   }
 };
 
-// Update user (/users/:id)
+// Update user (/users/updateUser/:id) COME BACK TO THIS
 const updateUser = async (
   req: Request<{ id: number }, any, User>,
   res: Response
@@ -69,12 +69,17 @@ const updateUser = async (
   }
 };
 
-// Delete user (/users/:id)
-const deleteUser = async (req: Request<{ id: number }>, res: Response) => {
+// Delete user (/users/deleteAccount/:cognitoSubId)
+const deleteAccount = async (
+  req: Request<{ cognitoSubId: string }>,
+  res: Response
+) => {
   try {
+    const { cognitoSubId } = req.params;
+    console.log("Deleted account:", cognitoSubId);
     const deleteUser = await prisma.user.delete({
       where: {
-        id: Number(req.params.id),
+        cognitoSub: String(cognitoSubId),
       },
     });
 
@@ -84,8 +89,8 @@ const deleteUser = async (req: Request<{ id: number }>, res: Response) => {
   } catch (error) {
     const { status, error: errorResponse } = errorHandler(error);
     res.status(status).json({ message: errorResponse });
-    // res.status(500).json({ message: errorHandler(error) });
+    // res.status(500).json({ message: error });
   }
 };
 
-export { getCurrentUser, registerUser, updateUser, deleteUser };
+export { getCurrentUser, registerUser, updateUser, deleteAccount };

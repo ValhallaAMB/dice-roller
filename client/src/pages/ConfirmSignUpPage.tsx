@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
 import { Hash, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import {
   ConfirmSignUpSchema,
   type ConfirmSignUpForm,
