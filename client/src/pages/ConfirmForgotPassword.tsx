@@ -1,8 +1,9 @@
 import FormLayout from "@components/common/FormLayout";
+import PasswordInput from "@components/common/PasswordInput";
+import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
-import { Eye, EyeOff, Hash, Key, Mail } from "lucide-react";
-import { useState } from "react";
+import { Key, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import {
@@ -11,7 +12,6 @@ import {
 } from "schemas/ConfirmForgotPasswordSchema";
 
 function ConfirmForgotPassword() {
-  const [showPassword, setShowPassword] = useState(false);
   const { loading, error, user, confirmForgotPassword } = useUserStore();
   const navigate = useNavigate();
 
@@ -38,73 +38,42 @@ function ConfirmForgotPassword() {
       error={error}
     >
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <p className="mb-1">Email</p>
-        <section className="input">
-          <Mail size={16} />
-          <input
-            placeholder="Email"
-            type="email"
-            {...register("email")}
-            required
-            disabled
-          />
-        </section>
+        <TextInput<ConfirmForgotPasswordForm>
+          title="Email"
+          Icon={Mail}
+          placeholder="Email"
+          type="email"
+          name="email"
+          disabled={true}
+          register={register}
+          error={errors.email?.message}
+        />
 
-        <p className="mb-1">Confirmation Code</p>
-        <section className="input">
-          <Hash size={16} />
-          <input
-            placeholder="Code"
-            type="number"
-            {...register("code")}
-            required
-          />
-        </section>
-        {errors.code && (
-          <p className="text-error text-xs">{errors.code?.message}</p>
-        )}
+        <TextInput<ConfirmForgotPasswordForm>
+          title="Confirmation Code"
+          Icon={Key}
+          placeholder="######"
+          type="number"
+          name="code"
+          register={register}
+          error={errors.code?.message}
+        />
 
-        <p className="mb-1">New Password</p>
-        <div className="input">
-          <Key size={16} />
-          <input
-            placeholder="Awesome new password"
-            type={showPassword ? "text" : "password"}
-            {...register("newPassword")}
-          />
-          <button
-            type="button"
-            className="-m-2 cursor-pointer p-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
-        {errors.newPassword && (
-          <p className="text-error text-xs">{errors.newPassword.message}</p>
-        )}
+        <PasswordInput<ConfirmForgotPasswordForm>
+          title="New Password"
+          placeholder="Awesome new password"
+          name="newPassword"
+          register={register}
+          error={errors.newPassword?.message}
+        />
 
-        <p className="mb-1">Confirm New Password</p>
-        <div className="input">
-          <Key size={16} />
-          <input
-            placeholder="Confirm awesome new password"
-            type={showPassword ? "text" : "password"}
-            {...register("confirmNewPassword")}
-          />
-          <button
-            type="button"
-            className="-m-2 cursor-pointer p-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
-        {errors.confirmNewPassword && (
-          <p className="text-error text-xs">
-            {errors.confirmNewPassword.message}
-          </p>
-        )}
+        <PasswordInput<ConfirmForgotPasswordForm>
+          title="Confirm New Password"
+          placeholder="Confirm awesome new password"
+          name="confirmNewPassword"
+          register={register}
+          error={errors.confirmNewPassword?.message}
+        />
 
         <button
           className="btn btn-primary mx-auto mt-1.5 block w-6/12"

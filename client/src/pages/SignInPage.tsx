@@ -1,15 +1,15 @@
 import FormLayout from "@components/common/FormLayout";
+import PasswordInput from "@components/common/PasswordInput";
+import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
-import { Eye, EyeOff, Key, Mail } from "lucide-react";
-import { useState } from "react";
+import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInSchema, type SignInForm } from "schemas/SignInSchema";
 
 function SignInPage() {
   const { loading, error, logIn } = useUserStore();
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -28,40 +28,23 @@ function SignInPage() {
   return (
     <FormLayout title="Sign In" label="Please enter your details" error={error}>
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <p className="mb-1">Email</p>
-        <section className="input">
-          <Mail size={16} />
-          <input
-            placeholder="Email"
-            type="email"
-            {...register("email")}
-            required
-          />
-        </section>
-        {errors.email && (
-          <p className="text-error text-xs">{errors.email?.message}</p>
-        )}
+        <TextInput<SignInForm>
+          title="Email"
+          Icon={Mail}
+          placeholder="awesome@email.com"
+          type="email"
+          name="email"
+          register={register}
+          error={errors.email?.message}
+        />
 
-        <p className="mb-1">Password</p>
-        <section className="input">
-          <Key size={16} />
-          <input
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            {...register("password")}
-            required
-          />
-          <button
-            type="button"
-            className="-m-2 cursor-pointer p-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </section>
-        {errors.password && (
-          <p className="text-error text-xs">{errors.password?.message}</p>
-        )}
+        <PasswordInput<SignInForm>
+          title="Password"
+          placeholder="Awesome password"
+          name="password"
+          register={register}
+          error={errors.password?.message}
+        />
 
         <p className="text-center">
           Forgot your password?{" "}

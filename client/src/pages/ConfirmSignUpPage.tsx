@@ -1,4 +1,5 @@
 import FormLayout from "@components/common/FormLayout";
+import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
 import { Hash, Mail } from "lucide-react";
@@ -36,31 +37,26 @@ function ConfirmSignUpPage() {
       error={error}
     >
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <p className="mb-1">Email</p>
-        <section className="input">
-          <Mail size={16} />
-          <input
-            placeholder="Email"
-            type="email"
-            {...register("email")}
-            required
-            disabled
-          />
-        </section>
+        <TextInput<ConfirmSignUpForm>
+          title="Email"
+          Icon={Mail}
+          placeholder="Email"
+          type="email"
+          name="email"
+          disabled={true}
+          register={register}
+          error={errors.email?.message}
+        />
 
-        <p className="mb-1">Confirmation Code</p>
-        <section className="input">
-          <Hash size={16} />
-          <input
-            placeholder="Code"
-            type="number"
-            {...register("code")}
-            required
-          />
-        </section>
-        {errors.code && (
-          <p className="text-error text-xs">{errors.code?.message}</p>
-        )}
+        <TextInput<ConfirmSignUpForm>
+          title="Confirmation Code"
+          Icon={Hash}
+          placeholder="######"
+          type="number"
+          name="code"
+          register={register}
+          error={errors.code?.message}
+        />
 
         <button
           className="btn btn-primary mx-auto mt-1.5 block w-6/12"

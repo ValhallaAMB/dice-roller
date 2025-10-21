@@ -1,7 +1,6 @@
+import PasswordInput from "@components/common/PasswordInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useUserStore from "@stores/useUserStore";
-import { Eye, EyeOff, Key } from "lucide-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   ChangePasswordSchema,
@@ -9,7 +8,6 @@ import {
 } from "schemas/ChangePasswordSchema";
 
 function ChangePassword() {
-  const [showPassword, setShowPassword] = useState(false);
   const { loading, error, changePassword } = useUserStore();
 
   const {
@@ -58,71 +56,29 @@ function ChangePassword() {
               onSubmit={handleSubmit(submitHandler)}
               className="space-y-2 [&>*]:w-full"
             >
-              <p className="mb-1">Old Password</p>
-              <div className="input">
-                <Key size={16} />
-                <input
-                  placeholder="Stinky old password"
-                  type={showPassword ? "text" : "password"}
-                  {...register("oldPassword")}
-                />
-                <button
-                  type="button"
-                  className="-m-2 cursor-pointer p-2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              {errors.oldPassword && (
-                <p className="text-error text-xs">
-                  {errors.oldPassword.message}
-                </p>
-              )}
+              <PasswordInput<ChangePasswordForm>
+                title="Old Password"
+                placeholder="Stinky old password"
+                name="oldPassword"
+                register={register}
+                error={errors.oldPassword?.message}
+              />
 
-              <p className="mb-1">New Password</p>
-              <div className="input">
-                <Key size={16} />
-                <input
-                  placeholder="Awesome new password"
-                  type={showPassword ? "text" : "password"}
-                  {...register("newPassword")}
-                />
-                <button
-                  type="button"
-                  className="-m-2 cursor-pointer p-2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              {errors.newPassword && (
-                <p className="text-error text-xs">
-                  {errors.newPassword.message}
-                </p>
-              )}
+              <PasswordInput<ChangePasswordForm>
+                title="New Password"
+                placeholder="Awesome new password"
+                name="newPassword"
+                register={register}
+                error={errors.newPassword?.message}
+              />
 
-              <p className="mb-1">Confirm New Password</p>
-              <div className="input">
-                <Key size={16} />
-                <input
-                  placeholder="Confirm awesome new password"
-                  type={showPassword ? "text" : "password"}
-                  {...register("confirmNewPassword")}
-                />
-                <button
-                  type="button"
-                  className="-m-2 cursor-pointer p-2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              {errors.confirmNewPassword && (
-                <p className="text-error text-xs">
-                  {errors.confirmNewPassword.message}
-                </p>
-              )}
+              <PasswordInput<ChangePasswordForm>
+                title="Confirm New Password"
+                placeholder="Confirm awesome new password"
+                name="confirmNewPassword"
+                register={register}
+                error={errors.confirmNewPassword?.message}
+              />
 
               <button
                 className="btn btn-primary mx-auto mt-2 block max-w-6/12"

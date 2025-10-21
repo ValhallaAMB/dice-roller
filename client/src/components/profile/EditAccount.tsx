@@ -1,3 +1,4 @@
+import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
 import { ImagePlus, Mail, User } from "lucide-react";
@@ -72,27 +73,24 @@ function EditAccount({}: Props) {
             <p className="text-error text-xs">{errors.pfp.message}</p>
           )}
 
-          <p className="mb-1">Username</p>
-          <section className="input">
-            <User size={16} />
-            <input
-              placeholder="Username"
-              type="text"
-              {...register("username")}
-            />
-          </section>
-          {errors.username && (
-            <p className="text-error text-xs">{errors.username.message}</p>
-          )}
-
-          <p className="mb-1">Email</p>
-          <section className="input">
-            <Mail size={16} />
-            <input placeholder="Email" type="email" {...register("email")} />
-          </section>
-          {errors.email && (
-            <p className="text-error text-xs">{errors.email.message}</p>
-          )}
+          <TextInput<ProfileEditForm>
+            title="Username"
+            name="username"
+            Icon={User}
+            placeholder="Username"
+            register={register}
+            error={errors.username?.message}
+          />
+          
+          <TextInput<ProfileEditForm>
+            title="Email"
+            name="email"
+            Icon={Mail}
+            type="email"
+            placeholder="Email"
+            register={register}
+            error={errors.email?.message}
+          />
 
           <button
             className="btn btn-primary mx-auto mt-1 block max-w-6/12"

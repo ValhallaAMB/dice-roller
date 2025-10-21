@@ -1,11 +1,14 @@
 import FormLayout from "@components/common/FormLayout";
+import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ForgotPasswordSchema, type ForgotPasswordForm } from "schemas/ForgotPasswordSchema";
-
+import {
+  ForgotPasswordSchema,
+  type ForgotPasswordForm,
+} from "schemas/ForgotPasswordSchema";
 
 function ForgotPassword() {
   const { loading, error, forgotPassword } = useUserStore();
@@ -31,19 +34,15 @@ function ForgotPassword() {
       error={error}
     >
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <p className="mb-1">Email</p>
-        <section className="input">
-          <Mail size={16} />
-          <input
-            placeholder="Email"
-            type="email"
-            {...register("email")}
-            required
-          />
-        </section>
-        {errors.email && (
-          <p className="text-error text-xs">{errors.email?.message}</p>
-        )}
+        <TextInput<ForgotPasswordForm>
+          title="Email"
+          Icon={Mail}
+          placeholder="awesome@email.com"
+          type="email"
+          name="email"
+          register={register}
+          error={errors.email?.message}
+        />
 
         <button
           className="btn btn-primary mx-auto mt-1.5 block w-6/12"

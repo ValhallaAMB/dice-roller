@@ -1,15 +1,15 @@
 import FormLayout from "@components/common/FormLayout";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
-import { Eye, EyeOff, Key, Mail, User } from "lucide-react";
-import { useState } from "react";
+import { Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { SignUpSchema, type SignUpForm } from "schemas/SignUpSchema";
 import { Link, useNavigate } from "react-router-dom";
+import PasswordInput from "@components/common/PasswordInput";
+import TextInput from "@components/common/TextInput";
 
 function SignUpPage() {
   const { loading, error, registerUser } = useUserStore();
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -28,54 +28,41 @@ function SignUpPage() {
   return (
     <FormLayout title="Sign Up" label="Please enter your details" error={error}>
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <p className="mb-1">Username</p>
-        <section className="input">
-          <User size={16} />
-          <input
-            placeholder="Username"
-            type="text"
-            {...register("username")}
-            required
-          />
-        </section>
-        {errors.username && (
-          <p className="text-error text-xs">{errors.username?.message}</p>
-        )}
+        <TextInput<SignUpForm>
+          title="Username"
+          Icon={User}
+          placeholder="Awesome username"
+          type="text"
+          name="username"
+          register={register}
+          error={errors.username?.message}
+        />
 
-        <p className="mb-1">Email</p>
-        <section className="input">
-          <Mail size={16} />
-          <input
-            placeholder="Email"
-            type="email"
-            {...register("email")}
-            required
-          />
-        </section>
-        {errors.email && (
-          <p className="text-error text-xs">{errors.email?.message}</p>
-        )}
+        <TextInput<SignUpForm>
+          title="Email"
+          Icon={Mail}
+          placeholder="awesome@email.com"
+          type="email"
+          name="email"
+          register={register}
+          error={errors.email?.message}
+        />
 
-        <p className="mb-1">Password</p>
-        <section className="input">
-          <Key size={16} />
-          <input
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            {...register("password")}
-            required
-          />
-          <button
-            type="button"
-            className="-m-2 cursor-pointer p-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </section>
-        {errors.password && (
-          <p className="text-error text-xs">{errors.password?.message}</p>
-        )}
+        <PasswordInput<SignUpForm>
+          title="Password"
+          placeholder="Awesome password"
+          name="password"
+          register={register}
+          error={errors.password?.message}
+        />
+
+        <PasswordInput<SignUpForm>
+          title="Confirm Password"
+          placeholder="Confirm awesome password"
+          name="confirmPassword"
+          register={register}
+          error={errors.confirmPassword?.message}
+        />
 
         <p className="text-center">
           Already have an account?{" "}
