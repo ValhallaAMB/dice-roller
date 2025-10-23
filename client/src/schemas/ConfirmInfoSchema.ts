@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const ConfirmSignUpSchema = z.object({
+export const ConfirmInfoSchema = z.object({
   email: z.email().max(255),
   code: z
     .string()
@@ -8,4 +8,4 @@ export const ConfirmSignUpSchema = z.object({
     .length(6, "Code must be 6 digits long"),
 });
 
-export type ConfirmSignUpForm = z.infer<typeof ConfirmSignUpSchema>;
+export type ConfirmInfoForm = z.infer<typeof ConfirmInfoSchema>;

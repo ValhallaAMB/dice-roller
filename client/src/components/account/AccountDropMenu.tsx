@@ -2,7 +2,7 @@ import { LogOut, User, UserPen, UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "@stores/useUserStore";
 
-function ProfileDropMenu() {
+function AccountDropMenu() {
   const { isAuthenticated, logOut } = useUserStore();
   const navigate = useNavigate();
   const logOutHandler = async () => {
@@ -53,4 +53,4 @@ function ProfileDropMenu() {
   );
 }
 
-export default ProfileDropMenu;
+export default AccountDropMenu;

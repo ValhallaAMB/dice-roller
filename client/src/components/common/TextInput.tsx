@@ -6,6 +6,7 @@ type Props<TFieldValues extends FieldValues> = {
   Icon: LucideIcon;
   placeholder?: string;
   type?: string;
+  value?: string;
   name: FieldPath<TFieldValues>;
   disabled?: boolean;
   register: UseFormRegister<TFieldValues>;
@@ -17,6 +18,7 @@ function TextInput<TFieldValues extends FieldValues>({
   Icon,
   placeholder,
   type,
+  value,
   name,
   disabled,
   register,
@@ -27,7 +29,13 @@ function TextInput<TFieldValues extends FieldValues>({
       <p className="mb-1">{title}</p>
       <section className="input">
         <Icon size={16} />
-        <input placeholder={placeholder} type={type ? type : "text"} disabled={disabled} {...register(name)} />
+        <input
+          placeholder={placeholder}
+          type={type ? type : "text"}
+          disabled={disabled}
+          {...register(name)}
+          value={value}
+        />
       </section>
       {error && <p className="text-error text-xs">{error}</p>}
     </>

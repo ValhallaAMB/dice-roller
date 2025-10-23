@@ -39,9 +39,9 @@ const {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useFormWithUserDefaults<ProfileEditForm>({
+  } = useFormWithUserDefaults<AccountEditForm>({
     formOptions: {
-      resolver: zodResolver(ProfileEditSchema),
+      resolver: zodResolver(AccountEditSchema),
     },
     mapUserToDefaults: (user) => ({
       username: user?.username ?? "",

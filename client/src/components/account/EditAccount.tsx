@@ -2,35 +2,36 @@ import TextInput from "@components/common/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 import useUserStore from "@stores/useUserStore";
 import { ImagePlus, Mail, User } from "lucide-react";
-import { useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
-  ProfileEditSchema,
-  type ProfileEditForm,
-} from "schemas/ProfileEditSchema";
+  AccountEditSchema,
+  type AccountEditForm,
+} from "schemas/AccountEditSchema";
+import type { ModalHandler } from "types/Modal";
+import ConfirmUpdateAccountModal from "./ConfirmUpdateAccountModal";
 
 type Props = {};
 
 function EditAccount({}: Props) {
-  const { user } = useUserStore();
+  const { error, user, updateUser } = useUserStore();
+  const modalRef = useRef<ModalHandler>(null);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm<ProfileEditForm>({
-    resolver: zodResolver(ProfileEditSchema),
+    getValues,
+    formState: { errors },
+  } = useForm<AccountEditForm>({
+    resolver: zodResolver(AccountEditSchema),
   });
 
-  const submitHandler = async (data: ProfileEditForm) => {
-    const userData = {
-      username: data.username,
-      email: data.email,
-      pfpBase64: data.pfp,
-    };
-
-    console.log(userData);
+  const submitHandler = async (data: AccountEditForm) => {
+    console.log(data);
+    // modalRef.current?.openModal();
+    const popModal = await updateUser(data);
+    if (popModal) modalRef.current?.openModal();
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ function EditAccount({}: Props) {
         <div className="avatar mb-2 flex-2/12 justify-center">
           <div className="w-36 rounded-full">
             {user?.pfpBase64 ? (
-              <img src={user.pfpBase64} />
+              <img className="mask mask-hexagon-2" src={user.pfpBase64} />
             ) : (
               <ImagePlus size={128} className="mt-2 w-36" />
             )}
@@ -69,13 +70,16 @@ function EditAccount({}: Props) {
           onSubmit={handleSubmit(submitHandler)}
           className="flex-auto space-y-2 [&>*]:w-full"
         >
+          {/* ERROR MESSAGE  */}
+          {error && <label className="alert alert-error mb-2">{error}</label>}
+
           <p className="mb-1">Profile Picture</p>
           <input type="file" className="file-input" {...register("pfp")} />
           {errors.pfp && (
             <p className="text-error text-xs">{errors.pfp.message}</p>
           )}
 
-          <TextInput<ProfileEditForm>
+          <TextInput<AccountEditForm>
             title="Username"
             name="username"
             Icon={User}
@@ -84,7 +88,7 @@ function EditAccount({}: Props) {
             error={errors.username?.message}
           />
 
-          <TextInput<ProfileEditForm>
+          <TextInput<AccountEditForm>
             title="Email"
             name="email"
             Icon={Mail}
@@ -102,6 +106,16 @@ function EditAccount({}: Props) {
           </button>
         </form>
       </div>
+      <Suspense fallback={null}>
+        <ConfirmUpdateAccountModal
+          id="confirm-update-account-modal"
+          title="Confirm Update"
+          message={`An email will be sent to ${getValues("email")} to verify these changes. Please enter the verification code.`}
+          ref={modalRef}
+          twBtnStyle="btn-primary"
+          varValue={getValues("email")}
+        />
+      </Suspense>
     </main>
   );
 }

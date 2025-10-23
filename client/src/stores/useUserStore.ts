@@ -9,6 +9,8 @@ import {
   confirmResetPassword,
   updatePassword,
   deleteUser,
+  updateUserAttribute,
+  confirmUserAttribute,
 } from "@aws-amplify/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -16,6 +18,7 @@ import type { SignUpForm } from "schemas/SignUpSchema";
 import type { SignInForm } from "schemas/SignInSchema";
 import type { User } from "types/User";
 import type { ConfirmForgotPasswordForm } from "schemas/ConfirmForgotPasswordSchema";
+import type { AccountEditForm } from "schemas/AccountEditSchema";
 
 type AuthState = {
   user: User | null;
@@ -24,16 +27,21 @@ type AuthState = {
   error: string | null;
 
   getUserSession: () => Promise<void>;
-  registerUser: (user: SignUpForm) => Promise<Boolean>;
+  registerUser: (newUser: SignUpForm) => Promise<Boolean>;
   confirmRegister: (email: string, code: string) => Promise<Boolean>;
-  logIn: (user: SignInForm) => Promise<Boolean>;
+  logIn: (currentUser: SignInForm) => Promise<Boolean>;
   logOut: () => Promise<Boolean>;
   forgotPassword: (email: string) => Promise<Boolean>;
-  confirmForgotPassword: (user: ConfirmForgotPasswordForm) => Promise<Boolean>;
+  confirmForgotPassword: (
+    currentUser: ConfirmForgotPasswordForm,
+  ) => Promise<Boolean>;
   changePassword: (
     oldPassword: string,
     newPassword: string,
   ) => Promise<Boolean>;
+  // updateUser now returns a tuple: [success, message]
+  updateUser: (currentUser: AccountEditForm) => Promise<Boolean>;
+  confirmUpdateUser: (code: string) => Promise<Boolean>;
   deleteAccount: () => Promise<Boolean>;
   resetError: () => void;
 };
@@ -47,7 +55,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   error: null,
 
   getUserSession: async () => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       const session = await getCurrentUser();
       if (!session.userId) {
@@ -55,13 +63,13 @@ const useUserStore = create<AuthState>((set, get) => ({
         return;
       }
 
-      console.log("User session:", session);
+      // console.log("User session:", session);
 
       const res = await axios.get(
         `${baseURL}/users/getCurrentUser/${session.userId}`,
       );
 
-      console.log("Fetched user data:", res.data);
+      // console.log("Fetched user data:", res.data);
 
       set({
         user: {
@@ -85,7 +93,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   },
 
   registerUser: async (newUser: SignUpForm) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       const { userId } = await signUp({
         username: newUser.email,
@@ -127,7 +135,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   },
 
   confirmRegister: async (email: string, code: string) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await confirmSignUp({ username: email, confirmationCode: code });
 
@@ -140,6 +148,8 @@ const useUserStore = create<AuthState>((set, get) => ({
         },
       });
 
+      toast.success("Confirmation successful! You can now sign in.");
+
       return true;
     } catch (error: any) {
       set({ error: error.message || "Failed to confirm sign up" });
@@ -149,12 +159,12 @@ const useUserStore = create<AuthState>((set, get) => ({
     }
   },
 
-  logIn: async (newUser: SignInForm) => {
-    set({ loading: true });
+  logIn: async (currentUser: SignInForm) => {
+    set({ loading: true, error: null });
     try {
       await signIn({
-        username: newUser.email,
-        password: newUser.password,
+        username: currentUser.email,
+        password: currentUser.password,
       });
 
       const session = await getCurrentUser();
@@ -163,10 +173,12 @@ const useUserStore = create<AuthState>((set, get) => ({
       );
 
       set({
-        user: { ...res.data, email: newUser.email },
+        user: { ...res.data, email: currentUser.email },
         isAuthenticated: !!session,
         error: null,
       });
+
+      toast.success("Sign in successful!");
 
       return true;
     } catch (error: any) {
@@ -179,7 +191,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   },
 
   logOut: async () => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await signOut();
       set({
@@ -187,6 +199,8 @@ const useUserStore = create<AuthState>((set, get) => ({
         isAuthenticated: false,
         error: null,
       });
+
+      toast.success("Signed out successfully!");
 
       return true;
     } catch (error: any) {
@@ -199,7 +213,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   },
 
   forgotPassword: async (email: string) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await resetPassword({
         username: email,
@@ -217,15 +231,15 @@ const useUserStore = create<AuthState>((set, get) => ({
     }
   },
 
-  confirmForgotPassword: async (user: ConfirmForgotPasswordForm) => {
-    set({ loading: true });
+  confirmForgotPassword: async (currentUser: ConfirmForgotPasswordForm) => {
+    set({ loading: true, error: null });
     try {
       await confirmResetPassword({
-        username: user.email,
-        confirmationCode: user.code,
-        newPassword: user.newPassword,
+        username: currentUser.email,
+        confirmationCode: currentUser.code,
+        newPassword: currentUser.newPassword,
       });
-      set({ error: null, user: { email: user.email } });
+      set({ error: null, user: { email: currentUser.email } });
 
       toast.success("Password reset successful!");
 
@@ -239,7 +253,7 @@ const useUserStore = create<AuthState>((set, get) => ({
   },
 
   changePassword: async (oldPassword: string, newPassword: string) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await updatePassword({
         oldPassword: oldPassword,
@@ -264,8 +278,78 @@ const useUserStore = create<AuthState>((set, get) => ({
     }
   },
 
+  updateUser: async (updatedUser: AccountEditForm) => {
+    set({ loading: true, error: null });
+    try {
+      let popModal = false;
+      let success = false;
+      const currentUser = get().user;
+
+      if (updatedUser.email !== currentUser?.email) {
+        await updateUserAttribute({
+          userAttribute: {
+            attributeKey: "email",
+            value: updatedUser.email,
+          },
+        });
+        popModal = true;
+      }
+
+      if (
+        updatedUser.username !== currentUser?.username
+        // || updatedUser.pfp !== currentUser?.pfpBase64
+      ) {
+        await axios.patch(
+          `${baseURL}/users/updateUser/${currentUser?.cognitoSub}`,
+          {
+            username: updatedUser.username,
+            // pfpBase64: updatedUser.pfp,
+          },
+        );
+        success = true;
+      }
+
+      if (popModal) toast("Please verify your new email address.");
+      else if (success) toast.success("User updated successfully!");
+      else toast("No changes made to update.");
+
+      set({
+        error: null,
+      });
+      return popModal;
+    } catch (error: any) {
+      if (error.response.status === 409)
+        set({ error: error.response.data.message });
+      else set({ error: error.message || "Failed to update user" });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  confirmUpdateUser: async (code: string) => {
+    set({ loading: true, error: null });
+    try {
+      await confirmUserAttribute({
+        userAttributeKey: "email",
+        confirmationCode: code,
+      });
+
+      await signOut();
+
+      toast.success("Email updated successfully! Please sign in again.");
+      set({ error: null });
+      return true;
+    } catch (error: any) {
+      set({ error: error.message || "Failed to confirm user update" });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   deleteAccount: async () => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       const currentUser = get().user;
 

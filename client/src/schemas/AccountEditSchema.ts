@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ProfileEditSchema = z.object({
+export const AccountEditSchema = z.object({
   username: z
     .string()
     .min(3, "Username must be at least 3 characters")
@@ -26,12 +26,9 @@ export const ProfileEditSchema = z.object({
   ),
 });
 
-export type ProfileEditForm = z.infer<typeof ProfileEditSchema>;
+export type AccountEditForm = z.infer<typeof AccountEditSchema>;
 
-
-
-
-// export const ProfileEditSchema = z
+// export const AccountEditSchema = z
 //   .object({
 //     username: z.string().min(3, "Username must be at least 3 characters long"),
 //     email: z.email("Valid email address is required").max(255),

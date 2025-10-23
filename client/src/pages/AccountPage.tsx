@@ -1,6 +1,6 @@
-import ChangePassword from "@components/profile/ChangePassword";
-import DeleteAccount from "@components/profile/DeleteAccount";
-import EditAccount from "@components/profile/EditAccount";
+import ChangePassword from "@components/account/ChangePassword";
+import DeleteAccount from "@components/account/DeleteAccount";
+import EditAccount from "@components/account/EditAccount";
 
 function AccountPage() {
   return (

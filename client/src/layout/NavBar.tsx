@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ThemeSwitcher from "@components/theme/ThemeSwitcher";
 import HistoryDropMenu from "@components/history/HistoryDropMenu";
-import ProfileDropMenu from "@components/profile/ProfileDropMenu";
+import AccountDropMenu from "@components/account/AccountDropMenu";
 import useThemeStore from "@stores/useThemeStore";
 import { twMerge } from "tailwind-merge";
 
@@ -37,7 +37,7 @@ function NavBar() {
           <HistoryDropMenu />
 
           {/* PROFILE ICON */}
-          <ProfileDropMenu />
+          <AccountDropMenu />
         </section>
       </div>
     </header>

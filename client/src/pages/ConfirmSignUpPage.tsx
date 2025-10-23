@@ -6,9 +6,9 @@ import { Hash, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import {
-  ConfirmSignUpSchema,
-  type ConfirmSignUpForm,
-} from "schemas/ConfirmSignUpSchema";
+  ConfirmInfoSchema,
+  type ConfirmInfoForm,
+} from "schemas/ConfirmInfoSchema";
 
 function ConfirmSignUpPage() {
   const { loading, error, user, confirmRegister } = useUserStore();
@@ -18,14 +18,14 @@ function ConfirmSignUpPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ConfirmSignUpForm>({
-    resolver: zodResolver(ConfirmSignUpSchema),
+  } = useForm<ConfirmInfoForm>({
+    resolver: zodResolver(ConfirmInfoSchema),
     defaultValues: {
       email: user?.email || "",
     },
   });
 
-  const submitHandler = async (data: ConfirmSignUpForm) => {
+  const submitHandler = async (data: ConfirmInfoForm) => {
     const success = await confirmRegister(data.email, data.code);
     if (success) navigate("/signin");
   };
@@ -37,7 +37,7 @@ function ConfirmSignUpPage() {
       error={error}
     >
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-2">
-        <TextInput<ConfirmSignUpForm>
+        <TextInput<ConfirmInfoForm>
           title="Email"
           Icon={Mail}
           placeholder="Email"
@@ -48,7 +48,7 @@ function ConfirmSignUpPage() {
           error={errors.email?.message}
         />
 
-        <TextInput<ConfirmSignUpForm>
+        <TextInput<ConfirmInfoForm>
           title="Confirmation Code"
           Icon={Hash}
           placeholder="######"

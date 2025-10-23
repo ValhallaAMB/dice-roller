@@ -45,26 +45,27 @@ const registerUser = async (
     res.status(201).json(newUser);
   } catch (error) {
     const { status, error: errorResponse } = errorHandler(error);
-    res.status(status).json({ message: errorResponse });
+    res.status(status).json({ errorResponse });
   }
 };
 
 // Update user (/users/updateUser/:id) COME BACK TO THIS
 const updateUser = async (
-  req: Request<{ id: number }, any, User>,
+  req: Request<{ cognitoSubId: number }, any, User>,
   res: Response
 ) => {
   try {
-    const { username, cognitoSub, pfpBase64 } = req.body;
+    const { username } = req.body;
+    const { cognitoSubId } = req.params;
     const updateUser = await prisma.user.update({
-      where: { id: Number(req.params.id) },
-      data: { username, cognitoSub, pfpBase64 },
+      where: { cognitoSub: String(cognitoSubId) },
+      data: { username },
     });
 
     res.json(updateUser);
   } catch (error) {
     const { status, error: errorResponse } = errorHandler(error);
-    res.status(status).json({ message: errorResponse });
+    res.status(status).json({ ...errorResponse });
     // res.status(500).json({ message: errorHandler(error) });
   }
 };

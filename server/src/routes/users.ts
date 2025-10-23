@@ -17,8 +17,8 @@ userRouter.get("/getCurrentUser/:cognitoSubId", getCurrentUser);
 // Register user (/users/registerUser)
 userRouter.post("/registerUser", registerUser);
 
-// Update user (/users/updateUser/:id)
-userRouter.patch("/updateUser/:id", updateUser);
+// Update user (/users/updateUser/:cognitoSubId)
+userRouter.patch("/updateUser/:cognitoSubId", updateUser);
 
 // Delete user (/users/deleteAccount/:cognitoSubId)
 userRouter.delete("/deleteAccount/:cognitoSubId", deleteAccount);

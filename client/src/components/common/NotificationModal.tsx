@@ -18,10 +18,15 @@ const NotificationModal = forwardRef<ModalHandler, Props>(
     const { theme } = useThemeStore();
     const modalRef = useDisplayModal(ref);
 
-    const onConfirm = () => {
-      func && func();
+    const modalHandler = () => {
       modalRef.current!.hidden = true;
       modalRef.current!.close();
+    };
+
+    const onConfirm = () => {
+      func && func();
+      
+      modalHandler();
     };
 
     return createPortal(
@@ -48,10 +53,7 @@ const NotificationModal = forwardRef<ModalHandler, Props>(
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => {
-                  modalRef.current!.hidden = true;
-                  modalRef.current!.close();
-                }}
+                onClick={modalHandler}
               >
                 Close
               </button>
