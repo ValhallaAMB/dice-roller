@@ -97,7 +97,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   cognitoSub: 'cognitoSub',
-  username: 'username',
   pfpBase64: 'pfpBase64'
 };
 
@@ -178,13 +177,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"strictUndefinedChecks\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int     @id @default(autoincrement())\n  cognitoSub String  @unique @db.VarChar(255)\n  username   String  @unique @db.VarChar(255)\n  pfpBase64  String?\n  roll       Roll[]\n}\n\nmodel Roll {\n  id        Int      @id @default(autoincrement())\n  userId    Int\n  result    Int\n  type      String   @db.VarChar(10)\n  createdAt DateTime @default(now())\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([userId])\n}\n",
-  "inlineSchemaHash": "f4c9ea04c69716d36e5c2a76d1b09dd3d3d9ea0588cb223fee0caf108302b730",
+  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"strictUndefinedChecks\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int     @id @default(autoincrement())\n  cognitoSub String  @unique @db.VarChar(255)\n  pfpBase64  String?\n  roll       Roll[]\n}\n\nmodel Roll {\n  id        Int      @id @default(autoincrement())\n  userId    Int\n  result    Int\n  type      String   @db.VarChar(10)\n  createdAt DateTime @default(now())\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([userId])\n}\n",
+  "inlineSchemaHash": "e2ed158bde3ee50f84295823849b17c2147ebfd16823ec41a30b1eafb04d07a8",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cognitoSub\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pfpBase64\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roll\",\"kind\":\"object\",\"type\":\"Roll\",\"relationName\":\"RollToUser\"}],\"dbName\":null},\"Roll\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"result\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RollToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cognitoSub\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pfpBase64\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roll\",\"kind\":\"object\",\"type\":\"Roll\",\"relationName\":\"RollToUser\"}],\"dbName\":null},\"Roll\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"result\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RollToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

@@ -20,15 +20,17 @@ const prisma = new PrismaClient();
 //   }
 // };
 
-// Get rolls (/rolls)
-const getRolls = async (req: Request, res: Response) => {
+// Get rolls (/rolls/:id)
+const getRolls = async (req: Request<{ id: number }>, res: Response) => {
   try {
-    const rolls = await prisma.roll.findMany();
+    const { id } = req.params;
+    const rolls = await prisma.roll.findMany({ where: { userId: Number(id) } });
     res.json(rolls);
   } catch (error) {
     // res.status(500).json({ message: errorHandler(error) });
+    console.log(error);
     const { status, error: errorResponse } = errorHandler(error);
-    res.status(status).json({ message: errorResponse });
+    res.status(status).json({ ...errorResponse });
   }
 };
 

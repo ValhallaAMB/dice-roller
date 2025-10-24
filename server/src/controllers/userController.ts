@@ -34,10 +34,9 @@ const registerUser = async (
   res: Response
 ) => {
   try {
-    const { username, cognitoSub, pfpBase64 } = req.body;
+    const { cognitoSub, pfpBase64 } = req.body;
     const newUser = await prisma.user.create({
       data: {
-        username,
         cognitoSub,
         pfpBase64,
       },
@@ -55,11 +54,11 @@ const updateUser = async (
   res: Response
 ) => {
   try {
-    const { username } = req.body;
+    const { pfpBase64 } = req.body;
     const { cognitoSubId } = req.params;
     const updateUser = await prisma.user.update({
       where: { cognitoSub: String(cognitoSubId) },
-      data: { username },
+      data: { pfpBase64 },
     });
 
     res.json(updateUser);

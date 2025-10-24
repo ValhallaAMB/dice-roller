@@ -6,8 +6,8 @@ const rollRouter = Router();
 // Get roll (/rolls/:id)
 // rollRouter.get("/:id", getRoll);
 
-// Get rolls (/rolls)
-rollRouter.get("/", getRolls);
+// Get rolls (/rolls/:id)
+rollRouter.get("/:id", getRolls);
 
 // Create roll (/rolls)
 rollRouter.post("/", createRoll);

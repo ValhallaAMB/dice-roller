@@ -5,6 +5,7 @@ import {
   signIn,
   signOut,
   getCurrentUser,
+  fetchUserAttributes,
   resetPassword,
   confirmResetPassword,
   updatePassword,
@@ -26,7 +27,7 @@ type AuthState = {
   loading: boolean;
   error: string | null;
 
-  getUserSession: () => Promise<void>;
+  getCurrentUser: () => Promise<void>;
   registerUser: (newUser: SignUpForm) => Promise<Boolean>;
   confirmRegister: (email: string, code: string) => Promise<Boolean>;
   logIn: (currentUser: SignInForm) => Promise<Boolean>;
@@ -54,19 +55,19 @@ const useUserStore = create<AuthState>((set, get) => ({
   loading: false,
   error: null,
 
-  getUserSession: async () => {
+  getCurrentUser: async () => {
     set({ loading: true, error: null });
     try {
-      const session = await getCurrentUser();
-      if (!session.userId) {
+      const userAttributes = await fetchUserAttributes();
+      if (!userAttributes) {
         set({ user: null, isAuthenticated: false, loading: false });
         return;
       }
 
-      // console.log("User session:", session);
+      // console.log("User session:", userAttributes);
 
       const res = await axios.get(
-        `${baseURL}/users/getCurrentUser/${session.userId}`,
+        `${baseURL}/users/getCurrentUser/${userAttributes.sub}`,
       );
 
       // console.log("Fetched user data:", res.data);
@@ -74,11 +75,14 @@ const useUserStore = create<AuthState>((set, get) => ({
       set({
         user: {
           ...res.data,
-          email: session.signInDetails?.loginId,
+          email: userAttributes.email,
+          username: userAttributes.preferred_username,
         },
-        isAuthenticated: !!session,
+        isAuthenticated: !!userAttributes,
         error: null,
       });
+
+      // console.log("User session set in store", get().user);
     } catch (error: any) {
       switch (error.name) {
         case "UserUnAuthenticatedException":
@@ -101,13 +105,13 @@ const useUserStore = create<AuthState>((set, get) => ({
         options: {
           userAttributes: {
             email: newUser.email,
+            preferred_username: newUser.username,
           },
         },
       });
 
       await axios.post(`${baseURL}/users/registerUser`, {
         cognitoSub: userId,
-        username: newUser.username,
         pfpBase64: null,
       });
 
@@ -127,7 +131,9 @@ const useUserStore = create<AuthState>((set, get) => ({
 
       return true;
     } catch (error: any) {
-      set({ error: error.message || "Failed to sign up" });
+      if (error.response?.status === 409)
+        set({ error: error.response.data.message });
+      else set({ error: error.message || "Failed to sign up" });
       return false;
     } finally {
       set({ loading: false });
@@ -295,19 +301,25 @@ const useUserStore = create<AuthState>((set, get) => ({
         popModal = true;
       }
 
-      if (
-        updatedUser.username !== currentUser?.username
-        // || updatedUser.pfp !== currentUser?.pfpBase64
-      ) {
-        await axios.patch(
-          `${baseURL}/users/updateUser/${currentUser?.cognitoSub}`,
-          {
-            username: updatedUser.username,
-            // pfpBase64: updatedUser.pfp,
+      if (updatedUser.username !== currentUser?.username) {
+        await updateUserAttribute({
+          userAttribute: {
+            attributeKey: "preferred_username",
+            value: updatedUser.username,
           },
-        );
+        });
         success = true;
       }
+
+      // if (updatedUser.pfp !== currentUser?.pfpBase64) {
+      //   await axios.patch(
+      //     `${baseURL}/users/updateUser/${currentUser?.cognitoSub}`,
+      //     {
+      //       pfpBase64: updatedUser.pfp,
+      //     },
+      //   );
+      //   success = true;
+      // }
 
       if (popModal) toast("Please verify your new email address.");
       else if (success) toast.success("User updated successfully!");

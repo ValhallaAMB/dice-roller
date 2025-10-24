@@ -28,8 +28,6 @@ function EditAccount({}: Props) {
   });
 
   const submitHandler = async (data: AccountEditForm) => {
-    console.log(data);
-    // modalRef.current?.openModal();
     const popModal = await updateUser(data);
     if (popModal) modalRef.current?.openModal();
   };

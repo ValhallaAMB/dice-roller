@@ -1,40 +1,23 @@
 import { Prisma } from "generated/prisma/index.js";
 import "dotenv/config";
 
-/**
- * Structured error response for API endpoints
- */
 export type ErrorResponse = {
-  message: string; // User-friendly message
-  code: string; // Error code for frontend handling
-  details?: string | undefined; // Technical details for debugging (dev mode only)
-  field?: string | undefined; // Field that caused the error (if applicable)
+  message: string;
+  code: string;
+  details?: string | undefined;
+  field?: string | undefined;
 };
 
-/**
- * Configuration for error handler
- */
 type ErrorHandlerConfig = {
-  isDevelopment?: boolean | undefined; // Include technical details in response
-  logError?: boolean | undefined; // Log errors to console
+  isDevelopment?: boolean;
+  logError?: boolean;
 };
 
-/**
- * Map of unique constraint field names to user-friendly names
- */
 const FIELD_NAMES: Record<string, string> = {
-  email: "Email address",
-  username: "Username",
+  cognitoSub: "Cognito ID",
   userId: "User",
 };
 
-/**
- * Handles Prisma errors and returns structured error responses
- *
- * @param error - The error object from Prisma
- * @param config - Configuration options
- * @returns Structured error response with appropriate HTTP status code
- */
 export default function errorHandler(
   error: unknown,
   config: ErrorHandlerConfig = {}
@@ -44,17 +27,14 @@ export default function errorHandler(
     logError = true,
   } = config;
 
-  // Log error in development mode
   if (logError && isDevelopment) {
     console.error("Prisma Error:", error);
   }
 
-  // Handle Prisma Client Known Request Errors
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     return handleKnownRequestError(error, isDevelopment);
   }
 
-  // Handle Prisma Client Validation Errors
   if (error instanceof Prisma.PrismaClientValidationError) {
     return {
       status: 400,
@@ -66,7 +46,6 @@ export default function errorHandler(
     };
   }
 
-  // Handle Prisma Client Initialization Errors
   if (error instanceof Prisma.PrismaClientInitializationError) {
     return {
       status: 503,
@@ -78,19 +57,17 @@ export default function errorHandler(
     };
   }
 
-  // Handle Prisma Client Rust Panic Errors
   if (error instanceof Prisma.PrismaClientRustPanicError) {
     return {
       status: 500,
       error: {
-        message: "An unexpected database error occurred",
+        message: "Database error occurred",
         code: "DATABASE_PANIC_ERROR",
         details: isDevelopment ? error.message : undefined,
       },
     };
   }
 
-  // Handle unknown errors
   return {
     status: 500,
     error: {
@@ -102,15 +79,11 @@ export default function errorHandler(
   };
 }
 
-/**
- * Handles Prisma Client Known Request Errors with specific error codes
- */
 function handleKnownRequestError(
   error: Prisma.PrismaClientKnownRequestError,
   isDevelopment: boolean
 ): { status: number; error: ErrorResponse } {
   switch (error.code) {
-    // Unique constraint violation
     case "P2002": {
       const target = error.meta?.target as string[] | undefined;
       const field = target?.[0];
@@ -123,13 +96,12 @@ function handleKnownRequestError(
           code: "UNIQUE_CONSTRAINT_VIOLATION",
           field: field,
           details: isDevelopment
-            ? `Unique constraint failed on field: ${target?.join(", ")}`
+            ? `Unique constraint failed on: ${target?.join(", ")}`
             : undefined,
         },
       };
     }
 
-    // Foreign key constraint violation
     case "P2003": {
       const fieldName = error.meta?.field_name as string | undefined;
       return {
@@ -139,14 +111,14 @@ function handleKnownRequestError(
           code: "FOREIGN_KEY_CONSTRAINT_VIOLATION",
           field: fieldName,
           details: isDevelopment
-            ? `Foreign key constraint failed on field: ${fieldName}`
+            ? `Foreign key constraint failed on: ${fieldName}`
             : undefined,
         },
       };
     }
 
-    // Record not found
-    case "P2025": {
+    case "P2025":
+    case "P2016": {
       return {
         status: 404,
         error: {
@@ -157,21 +129,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Record to delete does not exist
-    case "P2016": {
-      return {
-        status: 404,
-        error: {
-          message: "Record not found",
-          code: "RECORD_NOT_FOUND",
-          details: isDevelopment
-            ? "Record to delete does not exist"
-            : undefined,
-        },
-      };
-    }
-
-    // Required value missing
     case "P2011": {
       const constraint = error.meta?.constraint as string | undefined;
       return {
@@ -186,7 +143,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Value too long for column
     case "P2000": {
       const column = error.meta?.column_name as string | undefined;
       return {
@@ -195,14 +151,11 @@ function handleKnownRequestError(
           message: "Value is too long",
           code: "VALUE_TOO_LONG",
           field: column,
-          details: isDevelopment
-            ? `Value too long for column: ${column}`
-            : undefined,
+          details: isDevelopment ? `Value too long for: ${column}` : undefined,
         },
       };
     }
 
-    // Invalid value for column type
     case "P2007": {
       return {
         status: 400,
@@ -214,7 +167,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Query interpretation error
     case "P2009":
     case "P2012": {
       return {
@@ -227,7 +179,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Transaction failed
     case "P2034": {
       return {
         status: 409,
@@ -239,7 +190,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Dependent records exist (cascade delete would fail)
     case "P2014": {
       return {
         status: 400,
@@ -253,7 +203,6 @@ function handleKnownRequestError(
       };
     }
 
-    // Default case for other known errors
     default: {
       return {
         status: 500,
@@ -266,26 +215,3 @@ function handleKnownRequestError(
     }
   }
 }
-
-/**
- * Express middleware for handling Prisma errors
- *
- * Usage in your route:
- * ```
- * app.post('/api/users', async (req, res) => {
- *   try {
- *     const user = await prisma.user.create({ data: req.body });
- *     res.json(user);
- *   } catch (error) {
- *     const { status, error: errorResponse } = handlePrismaError(error);
- *     res.status(status).json(errorResponse);
- *   }
- * });
- * ```
- */
-// export function prismaErrorMiddleware(
-//   error: unknown,
-//   isDevelopment?: boolean
-// ): { status: number; error: ErrorResponse } {
-//   return errorHandler(error, { isDevelopment });
-// }

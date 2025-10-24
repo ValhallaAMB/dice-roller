@@ -2,13 +2,14 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 import type { Roll } from "../types/Roll";
+import useUserStore from "./useUserStore";
 
 type RollState = {
   rolls: Array<Roll>;
   loading: boolean;
   error: string | null;
 
-  fetchRolls: () => Promise<void>;
+  getRolls: () => Promise<void>;
   deleteRoll: (id: number) => Promise<void>;
   createRoll: (userId: number, type: string, result: number) => Promise<void>;
   deleteRolls: (ids: number[]) => Promise<void>;
@@ -21,12 +22,20 @@ const useRollStore = create<RollState>((set) => ({
   loading: false,
   error: null,
 
-  fetchRolls: async () => {
-    set({ loading: true });
+  getRolls: async () => {
+    set({ loading: true, error: null });
 
     try {
-      const res = await axios.get(`${baseURL}/rolls`);
+      const user = useUserStore.getState().user;
+      if (!user) {
+        // nothing to fetch yet
+        set({ rolls: [], loading: false });
+        return;
+      }
+
+      const res = await axios.get(`${baseURL}/rolls/${user?.id}`);
       const data: Roll[] = await res.data;
+
       set({ rolls: data, error: null });
     } catch (error: any) {
       if (error.status == 429)
@@ -38,7 +47,7 @@ const useRollStore = create<RollState>((set) => ({
   },
 
   createRoll: async (userId: number, type: string, result: number) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       const res = await axios.post(`${baseURL}/rolls`, {
         userId,
@@ -56,7 +65,7 @@ const useRollStore = create<RollState>((set) => ({
   },
 
   deleteRoll: async (id: number) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await axios.delete(`${baseURL}/rolls/${id}`);
       set((prev) => ({
@@ -71,7 +80,7 @@ const useRollStore = create<RollState>((set) => ({
   },
 
   deleteRolls: async (ids: number[]) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       await axios.delete(`${baseURL}/rolls`, { data: { ids } });
       set((prev) => ({

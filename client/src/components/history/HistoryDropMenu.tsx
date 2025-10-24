@@ -4,14 +4,13 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import useThemeStore from "@stores/useThemeStore";
 import type { ModalHandler } from "types/Modal";
+import useUserStore from "@stores/useUserStore";
 
 const NotificationModal = lazy(
   () => import("@components/common/NotificationModal"),
 );
 
 function HistoryDropMenu() {
-  const { rolls, loading, error, fetchRolls, deleteRoll, deleteRolls } =
-    useRollStore();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedRollId, setSelectedRollId] = useState<number | undefined>(
     undefined,
@@ -21,14 +20,18 @@ function HistoryDropMenu() {
   );
   const modalRef = useRef<ModalHandler>(null);
   const { theme } = useThemeStore();
+  const { rolls, loading, error, getRolls, deleteRoll, deleteRolls } =
+    useRollStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
-    const getRolls = async () => {
-      await fetchRolls();
+    const fetchRolls = async () => {
+      await getRolls();
     };
 
-    getRolls();
-  }, [rolls.length]);
+    if (!user) return;
+    fetchRolls();
+  }, [rolls.length, user?.id]);
 
   const openSingleDelete = (rollId: number) => {
     setSelectedRollId(rollId);
@@ -58,86 +61,94 @@ function HistoryDropMenu() {
             <div className="loading loading-spinner loading-lg"></div>
           </div>
         ) : (
-          <li>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>
-                    <input
-                      type="checkbox"
-                      className="checkbox"
-                      checked={
-                        selectedIds.length === rolls.length && rolls.length > 0
-                      }
-                      onChange={() =>
-                        setSelectedIds(
-                          selectedIds.length === rolls.length
-                            ? []
-                            : rolls.map((r) => r.id),
-                        )
-                      }
-                    />
-                  </th>
-                  <th>ID</th>
-                  <th>Result</th>
-                  <th>Dice Type</th>
-                  <th>Date</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {rolls.map((roll) => (
-                  <tr
-                    key={roll.id}
-                    className={twMerge(
-                      "hover:bg-neutral rounded-box",
-                      theme === "light" && "hover:bg-neutral/30",
-                    )}
-                  >
-                    <td>
-                      <label>
-                        <input
-                          type="checkbox"
-                          className="checkbox"
-                          checked={selectedIds.includes(roll.id)}
-                          onChange={() =>
-                            setSelectedIds((prev) =>
-                              prev.includes(roll.id)
-                                ? prev.filter((id) => id !== roll.id)
-                                : [...prev, roll.id],
-                            )
-                          }
-                        />
-                      </label>
-                    </td>
-                    <td>{roll.id}</td>
-                    <td>{roll.result}</td>
-                    <td>{roll.type}</td>
-                    <td>{new Date(roll.createdAt).toLocaleString()}</td>
-                    <td>
-                      <button
-                        className="btn btn-error btn-sm"
-                        onClick={() => openSingleDelete(roll.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {selectedIds.length > 0 && (
-              <div className="pointer-events-none sticky bottom-0 m-2 flex cursor-default justify-center hover:bg-transparent">
-                <button
-                  className="btn btn-error pointer-events-auto"
-                  onClick={openBulkDelete}
-                >
-                  Delete Selected
-                </button>
+          <>
+            {rolls.length === 0 && (
+              <div className="alert bg-neutral/30 mb-2">
+                No rolls found. Start rolling some dice to view your history!
               </div>
             )}
-          </li>
+            <li>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={
+                          selectedIds.length === rolls.length &&
+                          rolls.length > 0
+                        }
+                        onChange={() =>
+                          setSelectedIds(
+                            selectedIds.length === rolls.length
+                              ? []
+                              : rolls.map((r) => r.id),
+                          )
+                        }
+                      />
+                    </th>
+                    <th>ID</th>
+                    <th>Result</th>
+                    <th>Dice Type</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {rolls.map((roll) => (
+                    <tr
+                      key={roll.id}
+                      className={twMerge(
+                        "hover:bg-neutral rounded-box",
+                        theme === "light" && "hover:bg-neutral/30",
+                      )}
+                    >
+                      <td>
+                        <label>
+                          <input
+                            type="checkbox"
+                            className="checkbox"
+                            checked={selectedIds.includes(roll.id)}
+                            onChange={() =>
+                              setSelectedIds((prev) =>
+                                prev.includes(roll.id)
+                                  ? prev.filter((id) => id !== roll.id)
+                                  : [...prev, roll.id],
+                              )
+                            }
+                          />
+                        </label>
+                      </td>
+                      <td>{roll.id}</td>
+                      <td>{roll.result}</td>
+                      <td>{roll.type}</td>
+                      <td>{new Date(roll.createdAt).toLocaleString()}</td>
+                      <td>
+                        <button
+                          className="btn btn-error btn-sm"
+                          onClick={() => openSingleDelete(roll.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {selectedIds.length > 0 && (
+                <div className="pointer-events-none sticky bottom-0 m-2 flex cursor-default justify-center hover:bg-transparent">
+                  <button
+                    className="btn btn-error pointer-events-auto"
+                    onClick={openBulkDelete}
+                  >
+                    Delete Selected
+                  </button>
+                </div>
+              )}
+            </li>
+          </>
         )}
       </ul>
 
